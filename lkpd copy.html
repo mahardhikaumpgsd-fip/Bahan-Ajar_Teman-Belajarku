@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD – Teman Belajarku | 30 Soal Ide Pokok & Pendukung</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================================
+           A. VARIABEL WARNA & FONT (PALET CERIA)
+           ========================================================= */
+        :root {
+            --primary-toska: #00BCD4;   /* Toska */
+            --light-blue: #A7E0F9;      /* Biru muda langit */
+            --secondary-yellow: #FFD966; /* Kuning lembut */
+            --dark-text: #2c3e50;       /* Biru gelap elegan */
+            --light-bg: #FFFFFF;
+            --info-bg: #E0F7FA;         /* Background informasi */
+            --radius-xl: 1.5rem;
+            --radius-lg: 1rem;
+            --main-font: 'Poppins', sans-serif;
+        }
+
+        /* =========================================================
+           B. BODY & LAYOUT UMUM (SANGAT RESPONSIVE)
+           ========================================================= */
+        body {
+            font-family: var(--main-font);
+            background: linear-gradient(135deg, #f0f4f7, var(--light-blue) 90%);
+            color: var(--dark-text);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-size: 16px; 
+            padding-bottom: 70px;
+        }
+
+        /* HEADER JUDUL */
+        header {
+            background-color: var(--primary-toska);
+            color: var(--dark-text);
+            padding: 20px 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        header h1 { 
+            margin: 0; 
+            font-size: 2.2em;
+            font-weight: 800;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- TOMBOL KEMBALI (FLOATING CORNER BOTTOM LEFT) --- */
+        #backToMateri {
+            position: fixed; 
+            bottom: 20px; 
+            left: 20px;
+            z-index: 100; 
+            font-size: 0.9em;
+            padding: 12px 20px;
+            width: auto !important;
+            background-color: var(--secondary-yellow); 
+            color: var(--dark-text);
+            box-shadow: 0 6px 15px rgba(255, 217, 102, 0.6); 
+        }
+        #backToMateri:hover {
+            background-color: #FFC04C;
+        }
+
+        /* =========================================================
+           STRUKTUR GRID UTAMA (DIPERBAIKI)
+           ========================================================= */
+        main {
+            max-width: 1400px;
+            margin: 25px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--light-bg);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.25);
+            transition: all 0.4s ease;
+            border: 1px solid #eee;
+        }
+
+        #spin-and-question-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px; 
+        }
+
+        /* Desktop Layout (Grid Komposisi Baru yang Lebih Seimbang) */
+        @media (min-width: 1025px) {
+            main {
+                grid-template-areas:
+                    "instructions answers-table"
+                    "spin-and-question-container answers-table"
+                    "controls answers-table";
+                /* Mengubah proporsi kolom dari 2fr 1.5fr menjadi 1.2fr 1fr agar tabel jawaban lebih lega */
+                grid-template-columns: 1.2fr 1fr; 
+                align-items: start;
+            }
+            
+            #instructions {
+                grid-area: instructions;
+            }
+
+            #spin-and-question-container {
+                grid-area: spin-and-question-container;
+                /* Mengatur ulang bagian dalam menjadi 1 kolom penuh agar form soal & spin tersusun rapi ke bawah tanpa berdesakan */
+                grid-template-columns: 1fr; 
+            }
+
+            #controls {
+                grid-area: controls;
+            }
+
+            #answers-table {
+                grid-area: answers-table;
+                /* Membuat tabel jawaban memenuhi tinggi di sisi sebelah kanan */
+                height: fit-content;
+                position: sticky;
+                top: 25px;
+            }
+        }
+        
+        /* =========================================================
+           C. ELEMEN INTERAKSI & INPUT
+           ========================================================= */
+        .btn {
+            padding: 12px 25px; border: none; border-radius: var(--radius-lg); font-weight: 700; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+            margin: 8px 0; font-size: 1em; width: 100%; text-transform: uppercase;
+        }
+        .btn-primary { background-color: var(--secondary-yellow); color: var(--dark-text); }
+        .btn-toska { background-color: var(--primary-toska); color: var(--dark-text); }
+        .btn-reset { background-color: #EF4444; color: var(--light-bg); }
+        .btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); }
+
+        .input-text {
+            width: 98%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 0.75rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: inherit;
+            font-size: 1em;
+            background-color: #f9f9f9;
+        }
+        .input-text:focus {
+            border-color: var(--primary-toska);
+            box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.3); 
+            outline: none;
+            background-color: var(--light-bg);
+        }
+
+        /* =========================================================
+           D. SPIN DISPLAY
+           ========================================================= */
+        #spin {
+            text-align: center; background-color: var(--info-bg); border: 3px solid var(--primary-toska);
+        }
+        #spin h3 { color: var(--dark-text); font-weight: 700; }
+        
+        #spinResultDisplay {
+            width: 120px; height: 120px; border-radius: 50%;
+            background: #fff;
+            border: 4px dashed var(--secondary-yellow);
+            display: flex; justify-content: center; align-items: center; margin: 15px auto;
+            font-size: 3em; font-weight: 800; color: var(--dark-text);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* =========================================================
+           E. DADU 3D FULL SCREEN (NEW ANIMATION)
+           ========================================================= */
+        .dice-modal {
+            position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); 
+            display: none; justify-content: center; align-items: center;
+            opacity: 0; 
+            transition: opacity 0.5s ease;
+        }
+        .dice-modal.active { opacity: 1; display: flex; }
+
+        .dice-content {
+            text-align: center; color: var(--light-bg); padding: 20px;
+        }
+        .dice-content h2 {
+            font-size: 2.5em; color: var(--secondary-yellow); margin-bottom: 50px;
+        }
+
+        #diceCubeContainer {
+            width: 200px; height: 200px;
+            perspective: 800px;
+            margin: 0 auto;
+        }
+
+        .cube {
+            width: 100%; height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 3.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .face {
+            position: absolute;
+            width: 200px; height: 200px;
+            border: 10px solid var(--light-bg);
+            background-color: var(--primary-toska);
+            opacity: 0.9;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4em; font-weight: 800;
+            color: var(--dark-text);
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.4);
+            border-radius: var(--radius-lg);
+        }
+
+        .front  { transform: rotateY(  0deg) translateZ(100px); }
+        .back   { transform: rotateX(180deg) translateZ(100px); }
+        .right  { transform: rotateY( 90deg) translateZ(100px); }
+        .left   { transform: rotateY(-90deg) translateZ(100px); }
+        .top    { transform: rotateX( 90deg) translateZ(100px); }
+        .bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+        @keyframes diceRoll {
+            0%   { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(1800deg) rotateY(2520deg) rotateZ(1440deg); }
+        }
+
+        .spinning {
+            animation: diceRoll 3.5s forwards cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        /* =========================================================
+           F. KARTU SOAL & TABEL
+           ========================================================= */
+        #current-question { background-color: var(--light-bg); }
+        #questionText { 
+            font-size: 1.15em; 
+            border-left: 6px solid var(--secondary-yellow); 
+            padding: 10px 15px; 
+            font-style: italic;
+            background-color: #fffaf0;
+            border-radius: 5px;
+        }
+
+        #answersBody tr td { padding: 12px 15px; }
+        .highlight-row { background-color: var(--secondary-yellow) !important; }
+
+        .modal {
+            position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            background-color: var(--light-bg); padding: 30px; border-radius: var(--radius-xl); width: 90%; max-width: 700px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); position: relative; transform: scale(0.9); transition: transform 0.3s ease-in-out;
+        }
+        .modal.active { opacity: 1; }
+        .modal.active .modal-content { transform: scale(1); }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.2s; }
+        #rankingTable { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .rank-1 { background-color: var(--secondary-yellow) !important; color: var(--dark-text); }
+        .rank-2 { background-color: #fce8a6 !important; }
+        .rank-3 { background-color: #fcf1d4 !important; }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Lembar Kerja Peserta Didik 📝</h1>
+        <p style="font-size: 0.9em; margin-bottom: 0;">Menentukan Ide Pokok dan Ide Pendukung (Soal 1 - 30)</p>
+    </header>
+
+    <button class="btn" id="backToMateri" onclick="goToMateri()">
+        ◀️ Kembali ke Materi
+    </button>
+    
+    <main>
+        
+        <section id="instructions" class="card">
+            <h2 style="color: var(--primary-toska); margin-top: 0;"><span style="font-size: 1.2em;">⭐</span> Petunjuk LKPD</h2>
+            <p>1. Klik tombol <b>🎡 Putar Spin</b> untuk menentukan **Nomor Absen** siswa yang mendapat giliran.</p>
+            <p>2. Siswa yang terpilih mengisi **Ide Pokok**, **Ide Pendukung**, dan **Nama** pada kartu soal.</p>
+            <p>3. Klik **Kirim Jawaban**. Jawaban tersimpan otomatis, dan soal akan berganti ke nomor berikutnya.</p>
+            <p style="font-weight: 700; background-color: #fef7e0; padding: 10px; border-radius: 8px;">⚠️ Setiap Nomor Absen (1-30) hanya mendapat satu kali giliran menjawab.</p>
+        </section>
+
+        <div id="spin-and-question-container">
+            <div id="spin" class="card">
+                <h3 style="color: var(--dark-text); margin-top: 0;">Nomor Absen yang Terpilih</h3>
+                <div id="spinResultDisplay">
+                    <span style="font-size: 2em;">🎲</span>
+                </div>
+                <button class="btn btn-toska" id="spinBtn" onclick="spinRandomStudent()" aria-label="Putar Roda untuk memilih siswa">
+                    🎡 Putar Spin
+                </button>
+                <div id="selectedStudent" style="margin-top: 15px; font-weight: 700; font-size: 1.1em;">
+                    Siswa Absen: <span id="studentNumber" style="color: #FF6B6B;">---</span>
+                </div>
+            </div>
+
+            <div id="current-question" class="card">
+                <h2 style="color: var(--primary-toska);">Soal <span id="questionNumber">1</span> / 30</h2>
+                <div id="questionCard">
+                    <p id="questionText">[Teks soal akan muncul di sini]</p>
+                    
+                    <table style="width: 100%; margin-top: 15px; border-collapse: separate; border-spacing: 0 10px;">
+                        <tr>
+                            <td style="width: 30%; font-weight: 600; vertical-align: top; padding-top: 5px;">1. Ide Pokok:</td>
+                            <td style="width: 70%;">
+                                <input type="text" id="mainIdea" class="input-text" placeholder="Tulis ide pokok (inti kalimat) di sini" maxlength="150" style="width: 95%;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 30%; font-weight: 600; vertical-align: top; padding-top: 5px;">2. Ide Pendukung:</td>
+                            <td style="width: 70%;">
+                                <input type="text" id="supportIdea" class="input-text" placeholder="Tulis satu kalimat pendukung di sini" maxlength="150" style="width: 95%;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 30%; font-weight: 600; vertical-align: top; padding-top: 5px;">Nama Siswa (Absen <span id="currentAbsenNum">--</span>):</td>
+                            <td style="width: 70%;">
+                                <input type="text" id="studentName" class="input-text" placeholder="Nama lengkap siswa yang terpilih" disabled style="width: 95%;">
+                            </td>
+                        </tr>
+                    </table>
+                    <button class="btn btn-primary" id="submitAnswer" style="margin-top: 25px;" onclick="submitAnswer()">
+                        Kirim Jawaban
+                    </button>
+                </div>
+                <div id="finishMessage" style="display: none; text-align: center; margin-top: 20px;">
+                    <h3 style="color: var(--primary-toska);">✅ LKPD Selesai!</h3>
+                    <p>Semua 30 soal telah dijawab. Silakan lihat Peringkat.</p>
+                </div>
+            </div>
+        </div>
+
+
+        <section id="answers-table" class="card">
+            <h2 style="color: var(--secondary-yellow); margin-top: 0;">Tabel Jawaban Ringkas</h2>
+            <div style="max-height: 500px; overflow-y: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 12%;">Soal</th>
+                            <th style="width: 15%;">Absen</th>
+                            <th style="width: 20%;">Nama</th>
+                            <th style="width: 43%;">Jawaban (Pokok + Pendukung)</th>
+                            <th style="width: 10%;">Skor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="answersBody">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="controls" class="card">
+            <h3 style="color: var(--primary-toska); margin-top: 0;">Data & Laporan</h3>
+            
+            <button class="btn btn-primary" id="viewRanking" onclick="showRankingModal()">
+                🏆 Lihat Peringkat
+            </button>
+            <button class="btn btn-toska" id="exportCSV" onclick="exportCSV()">
+                📥 Export CSV
+            </button>
+            <button class="btn btn-reset" id="resetLKPD" onclick="confirmReset()">
+                🔄 Reset LKPD
+            </button>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; Teman Belajarku - LKPD Interaktif 2024 | Dibuat dengan semangat belajar.</p>
+    </footer>
+
+    <div id="diceOverlay" class="dice-modal" role="dialog" aria-modal="true">
+        <div class="dice-content">
+            <h2 id="diceTitle">Memutar Dadu Absen... 🎲</h2>
+            <div id="diceCubeContainer">
+                <div class="cube" id="diceCube">
+                    <div class="face front">1</div>
+                    <div class="face back">6</div>
+                    <div class="face right">3</div>
+                    <div class="face left">4</div>
+                    <div class="face top">5</div>
+                    <div class="face bottom">2</div>
+                </div>
+            </div>
+            <div id="finalResultDisplay" style="font-size: 5em; font-weight: 800; color: var(--light-bg); margin-top: 30px; display: none;"></div>
+            <button class="btn btn-toska" id="continueBtn" onclick="closeDiceModal()" style="display: none; width: 300px; margin-top: 20px;">
+                Lanjutkan ke Soal
+            </button>
+        </div>
+    </div>
+
+    <div id="rankingModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rankingTitle">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('rankingModal')">&times;</span>
+            <h2 id="rankingTitle" style="color: var(--primary-toska);">🏆 Ranking Siswa</h2>
+            <p>Skor Maksimum: 10 poin per soal. Total skor maksimal: 300.</p>
+            <table id="rankingTable">
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Rank</th>
+                        <th style="width: 20%;">Absen</th>
+                        <th style="width: 40%;">Nama Siswa</th>
+                        <th style="width: 25%;">Skor Total</th>
+                    </tr>
+                </thead>
+                <tbody id="rankingTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Data State Global
+        const LS_KEY = 'lkpd_30_soal_state';
+        const TOTAL_QUESTIONS = 30;
+        const TOTAL_STUDENTS = 30; 
+        
+        let state = {
+            currentQuestion: 1, 
+            usedStudentNumbers: [], 
+            answers: {}, 
+            currentStudent: null 
+        };
+
+        // 30 Soal & Kunci Jawaban Sederhana (New data from PDF)
+        const QUESTIONS = [
+            { id: 1, text: "Setiap pagi, Ayu selalu bangun pukul 05.30. la menyiram tanaman, memberi makan ikan, dan membantu ibunya menyiapkan sarapan. Setelah itu, ia berangkat ke sekolah dengan sepeda.", keys: ["Ayu", "pagi hari", "teratur", "menyiram tanaman", "memberi makan ikan", "membantu sarapan", "sekolah dengan sepeda"] },
+            { id: 2, text: "Di sekolah, Rudi mengikuti berbagai kegiatan ekstrakurikuler: pramuka, klub sains, dan latihan sepak bola. Hal ini membuat Rudi disiplin dan aktif.", keys: ["Rudi", "aktif", "ekstrakurikuler", "pramuka", "klub sains", "sepak bola", "disiplin"] },
+            { id: 3, text: "Musim hujan membuat udara sejuk. Banyak orang menanam padi dan sayuran. Anak-anak senang bermain hujan di halaman rumah.", keys: ["musim hujan", "bermanfaat", "perubahan", "menanam padi", "menanam sayuran", "senang bermain hujan"] },
+            { id: 4, text: "Buku bacaan penting bagi anak. Membaca buku menambah wawasan, mengembangkan imajinasi, dan belajar nilai moral. Orang tua sebaiknya menyediakan buku sesuai usia dan mendampingi anak membaca.", keys: ["membaca buku", "perkembangan", "anak", "wawasan", "imajinasi", "nilai moral", "penting"] },
+            { id: 5, text: "Lingkungan sekolah harus bersih. Siswa wajib membuang sampah pada tempatnya, menyiram tanaman, dan menjaga fasilitas sekolah. Lingkungan bersih membuat belajar nyaman dan sehat.", keys: ["lingkungan sekolah", "kebersihan", "penting", "buang sampah", "menyiram tanaman", "menjaga fasilitas", "nyaman dan sehat"] },
+            { id: 6, text: "Ani suka menabung setiap bulan. la menyisihkan sebagian uang jajan untuk membeli buku, menyumbang ke panti asuhan, dan menabung di bank. Kebiasaan ini membuat Ani lebih bertanggung jawab.", keys: ["Ani", "menabung", "bertanggung jawab", "membeli buku", "menyumbang", "panti asuhan", "bank"] },
+            { id: 7, text: "Pohon mangga di halaman rumah Pak Budi mulai berbuah. Anak-anak senang memetik mangga, tetangga ikut mencicipi, dan Pak Budi membuat jus dari buah tersebut.", keys: ["pohon mangga", "Pak Budi", "berbuah", "bermanfaat", "anak-anak memetik", "tetangga mencicipi", "membuat jus"] },
+            { id: 8, text: "Siswa diminta mengerjakan PR tepat waktu. Mereka membaca buku pelajaran, berdiskusi dengan teman, dan bertanya kepada guru. Hal ini membantu siswa memahami materi dengan baik.", keys: ["mengerjakan PR", "tepat waktu", "belajar efektif", "membaca buku", "berdiskusi", "bertanya guru", "memahami materi"] },
+            { id: 9, text: "Setiap sore, Beni berolahraga di taman. la berlari, bermain bola, dan senam ringan. Kegiatan ini membuat Beni tetap sehat dan bugar.", keys: ["Beni", "olahraga sore", "sehat dan bugar", "berlari", "bermain bola", "senam ringan"] },
+            { id: 10, text: "Ibu membeli sayur dan buah di pasar. la memilih sayur segar, buah matang, dan ikan yang masih baru. Hal ini penting untuk kesehatan keluarga.", keys: ["Ibu", "makanan segar", "kesehatan keluarga", "sayur segar", "buah matang", "ikan baru"] },
+            { id: 11, text: "Alam memiliki banyak keindahan. Gunung menjulang tinggi, sungai mengalir jernih, dan bunga bermekaran indah. Keindahan alam harus dijaga oleh manusia.", keys: ["keindahan alam", "dijaga", "manusia", "gunung", "sungai jernih", "bunga bermekaran"] },
+            { id: 12, text: "Sepeda motor harus dirawat agar awet. Pemiliknya harus mengganti oli, mengecek rem, dan membersihkan rantai secara rutin.", keys: ["merawat motor", "penting", "awet", "mengganti oli", "mengecek rem", "membersihkan rantai"] },
+            { id: 13, text: "Ayah selalu menanam sayur di halaman rumah. la menanam kangkung, bayam, dan tomat. Hal ini membuat keluarga mendapat sayur sehat setiap hari.", keys: ["Ayah menanam sayur", "halaman", "keluarga sehat", "kangkung", "bayam", "tomat"] },
+            { id: 14, text: "Sekolah mengadakan lomba membaca puisi. Siswa mempersiapkan teks, berlatih di kelas, dan menampilkan di depan juri. Lomba ini membuat siswa percaya diri.", keys: ["lomba puisi", "percaya diri", "siswa", "mempersiapkan teks", "berlatih", "menampilkan"] },
+            { id: 15, text: "Pagi hari, burung-burung berkicau di pohon. Kucing bermain di halaman, dan anak-anak berangkat ke sekolah dengan riang. Suasana pagi sangat menyenangkan.", keys: ["suasana pagi", "menyenangkan", "burung berkicau", "kucing bermain", "anak-anak sekolah"] },
+            { id: 16, text: "Ibu mengajarkan memasak pada Ani. Mereka membuat sayur sop, kue lapis, dan sambal terasi. Ani senang belajar karena hasil masakan lezat.", keys: ["Ani", "belajar memasak", "senang dan mahir", "sayur sop", "kue lapis", "sambal terasi"] },
+            { id: 17, text: "Cuaca panas membuat orang banyak minum air. Beberapa orang memakai kipas angin, anak-anak bermain di kolam renang, dan orang dewasa beristirahat di rumah.", keys: ["cuaca panas", "menyejukkan diri", "minum air", "kipas angin", "kolam renang", "beristirahat"] },
+            { id: 18, text: "Sekolah mengadakan kerja bakti. Siswa membersihkan kelas, merapikan halaman, dan menanam pohon. Kerja bakti membuat lingkungan sekolah lebih rapi.", keys: ["kerja bakti", "lingkungan sekolah", "lebih rapi", "membersihkan kelas", "merapikan halaman", "menanam pohon"] },
+            { id: 19, text: "Rani memelihara hewan peliharaan di rumah. Ia memberi makan kucing, membersihkan kandang burung, dan membawa anjing jalan-jalan.", keys: ["Rani", "hewan peliharaan", "bertanggung jawab", "memberi makan kucing", "bersihkan kandang", "membawa anjing"] },
+            { id: 20, text: "Setiap sore, anak-anak bermain di taman. Mereka bermain sepeda, bermain bola, dan bersantai di bangku taman. Taman menjadi tempat menyenangkan.", keys: ["taman", "menyenangkan", "anak-anak", "bermain sepeda", "bermain bola", "bersantai"] },
+            { id: 21, text: "Ayah mengajarkan Rudi membaca peta. Mereka melihat gunung. sungai, dan jalan raya. Rudi belajar mengenal arah dan lokasi.", keys: ["membaca peta", "Rudi", "arah dan lokasi", "melihat gunung", "melihat sungai", "jalan raya"] },
+            { id: 22, text: "Buah-buahan sangat bermanfaat. Apel menguatkan gigi, pisang memberi energi, dan jeruk kaya vitamin C.", keys: ["buah-buahan", "bermanfaat", "kesehatan tubuh", "apel", "pisang", "jeruk", "vitamin C"] },
+            { id: 23, text: "Sekolah menyediakan perpustakaan. Siswa dapat meminjam buku cerita, buku ilmu pengetahuan, dan majalah. Hal ini meningkatkan minat baca.", keys: ["perpustakaan", "sekolah", "minat baca", "meminjam buku cerita", "ilmu pengetahuan", "majalah"] },
+            { id: 24, text: "Taman kota dihias indah. Ada bunga warna-warni, pohon rindang, dan jalan setapak. Pengunjung betah berlama-lama di taman.", keys: ["taman kota", "dihias", "nyaman dikunjungi", "bunga warna-warni", "pohon rindang", "jalan setapak"] },
+            { id: 25, text: "Setiap akhir pekan, keluarga pergi berlibur. Mereka mengunjungi pantai, bermain di taman hiburan, dan piknik di kebun. Liburan membuat suasana hangat.", keys: ["liburan", "akhir pekan", "keluarga hangat", "mengunjungi pantai", "taman hiburan", "piknik kebun"] },
+            { id: 26, text: "Ayu belajar menulis puisi. la mencari inspirasi dari alam, pengalaman sehari-hari, dan cerita teman. Hasil puisi menjadi indah dan bermakna.", keys: ["Ayu", "menulis puisi", "indah dan bermakna", "inspirasi alam", "pengalaman sehari-hari", "cerita teman"] },
+            { id: 27, text: "Beni rajin membersihkan rumah. la menyapu lantai, mengepel, dan merapikan lemari. Rumah menjadi bersih dan rapi.", keys: ["Beni", "membersihkan rumah", "rapi dan bersih", "menyapu lantai", "mengepel", "merapikan lemari"] },
+            { id: 28, text: "Di kebun sekolah, guru menanam bunga. Siswa ikut menanam, menyiram, dan memupuk. Kebun menjadi indah dan asri.", keys: ["menanam bunga", "kebun sekolah", "indah dan asri", "siswa ikut menanam", "menyiram", "memupuk tanaman"] },
+            { id: 29, text: "Setiap pagi, Pak Didi berolahraga. la lari, senam, dan latihan push-up. Kesehatannya tetap terjaga.", keys: ["Pak Didi", "berolahraga pagi", "kesehatan terjaga", "lari", "senam", "latihan push-up"] },
+            { id: 30, text: "Sekolah mengadakan pameran karya siswa. Ada lukisan, kerajinan tangan, dan poster edukatif. Pameran ini membuat siswa bangga dan percaya diri.", keys: ["pameran karya siswa", "bangga", "percaya diri", "lukisan", "kerajinan tangan", "poster edukatif"] }
+        ];
+
+        /* =========================================================
+           FUNGSI PENYIMPANAN & MUAT
+           ========================================================= */
+
+        function loadState() {
+            const savedState = localStorage.getItem(LS_KEY);
+            if (savedState) {
+                try {
+                    const loaded = JSON.parse(savedState);
+                    state.currentQuestion = loaded.currentQuestion || 1;
+                    state.usedStudentNumbers = loaded.usedStudentNumbers || [];
+                    state.answers = loaded.answers || {};
+                    state.currentStudent = loaded.currentStudent || null;
+                } catch (e) {
+                    console.error("Gagal memuat state dari localStorage:", e);
+                }
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(LS_KEY, JSON.stringify(state));
+        }
+
+        function confirmReset() {
+            if (confirm("Anda yakin ingin menghapus SEMUA data jawaban siswa dan memulai LKPD dari awal (Soal 1)? Tindakan ini tidak dapat dibatalkan.")) {
+                localStorage.removeItem(LS_KEY);
+                window.location.reload(true); 
+            }
+        }
+        
+        function goToMateri() {
+            // Ganti 'materi.html' dengan link/tujuan yang sesuai
+            window.location.href = 'materi.html'; 
+        }
+
+        /* =========================================================
+           FUNGSI UTAMA DISPLAY
+           ========================================================= */
+
+        function renderQuestion() {
+            const qNum = state.currentQuestion;
+            
+            document.getElementById('questionNumber').innerText = qNum;
+
+            if (qNum > TOTAL_QUESTIONS) {
+                document.getElementById('spin').style.display = 'none';
+                document.getElementById('questionCard').style.display = 'none';
+                document.getElementById('finishMessage').style.display = 'block';
+                document.getElementById('spinBtn').disabled = true;
+                return;
+            } else {
+                document.getElementById('spin').style.display = 'block';
+                document.getElementById('questionCard').style.display = 'block';
+                document.getElementById('finishMessage').style.display = 'none';
+            }
+
+            const questionData = QUESTIONS[qNum - 1];
+            // Tambahkan "Stimulus: " agar lebih jelas
+            document.getElementById('questionText').innerText = `Stimulus: ${questionData.text}`;
+            
+            document.getElementById('mainIdea').value = '';
+            document.getElementById('supportIdea').value = '';
+            document.getElementById('studentName').value = '';
+            
+            document.getElementById('spinBtn').disabled = false;
+            document.getElementById('submitAnswer').disabled = true;
+            document.getElementById('currentAbsenNum').innerText = '--';
+            document.getElementById('studentName').disabled = true;
+            document.getElementById('studentNumber').innerText = '---';
+            document.getElementById('spinResultDisplay').innerHTML = '<span style="font-size: 2em;">🎲</span>';
+        }
+
+        function renderAnswerTable() {
+            const tbody = document.getElementById('answersBody');
+            tbody.innerHTML = '';
+            let isAnyAnswer = false;
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const answer = state.answers[`q${i}`];
+                const tr = document.createElement('tr');
+                tr.id = `row-q${i}`;
+
+                if (answer) {
+                    isAnyAnswer = true;
+                    if (i === state.currentQuestion - 1 && state.currentQuestion <= TOTAL_QUESTIONS + 1) {
+                        tr.classList.add('highlight-row');
+                        setTimeout(() => tr.classList.remove('highlight-row'), 4000);
+                    }
+
+                    tr.innerHTML = `
+                        <td style="font-weight: 700;">${i}</td>
+                        <td>${answer.studentNum}</td>
+                        <td>${answer.name}</td>
+                        <td>
+                            <span style="font-weight: 600;">Pokok:</span> ${answer.pokok.substring(0, 40)}${answer.pokok.length > 40 ? '...' : ''} <br>
+                            <span style="font-weight: 600;">Pendukung:</span> ${answer.pendukung.substring(0, 40)}${answer.pendukung.length > 40 ? '...' : ''}
+                        </td>
+                        <td><strong style="color: ${answer.score >= 8 ? '#10B981' : (answer.score >= 5 ? '#F59E0B' : '#EF4444')}">${answer.score}</strong>/10</td>
+                    `;
+                } else {
+                     if (i === state.currentQuestion) {
+                        tr.classList.add('highlight-row'); 
+                    }
+                    tr.innerHTML = `
+                        <td style="font-weight: 700;">${i}</td>
+                        <td colspan="4" style="font-style: italic; color: #999;">-- Belum Dijawab --</td>
+                    `;
+                }
+                tbody.appendChild(tr);
+            }
+            
+            if (isAnyAnswer) {
+                const lastRowId = `row-q${state.currentQuestion > 1 ? state.currentQuestion - 1 : 1}`;
+                const lastRow = document.getElementById(lastRowId);
+                if(lastRow) lastRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+        
+        /* =========================================================
+           FUNGSI DADU 3D ANIMATION
+           ========================================================= */
+        function showDiceModal() {
+            const modal = document.getElementById('diceOverlay');
+            const cube = document.getElementById('diceCube');
+            document.getElementById('finalResultDisplay').style.display = 'none';
+            document.getElementById('diceCubeContainer').style.display = 'block';
+            document.getElementById('continueBtn').style.display = 'none';
+            document.getElementById('diceTitle').innerText = 'Memutar Dadu Absen... 🎲';
+            
+            // Reset Cube position visually and remove animation class
+            cube.classList.remove('spinning');
+            cube.style.transition = 'none'; 
+            cube.style.transform = 'rotateX(0deg) rotateY(0deg) rotateZ(0deg)'; 
+            
+            setTimeout(() => {
+                cube.style.transition = ''; // Restore transition if needed
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('active'), 10);
+            }, 50);
+        }
+
+        function closeDiceModal() {
+            const modal = document.getElementById('diceOverlay');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 500);
+            
+            // Setelah modal tertutup, fokus ke input
+            document.getElementById('mainIdea').focus();
+        }
+
+
+        function spinRandomStudent() {
+            if (state.currentQuestion > TOTAL_QUESTIONS) return;
+
+            const spinBtn = document.getElementById('spinBtn');
+            spinBtn.disabled = true;
+
+            const availableNumbers = [];
+            for (let i = 1; i <= TOTAL_STUDENTS; i++) {
+                if (!state.usedStudentNumbers.includes(i)) {
+                    availableNumbers.push(i);
+                }
+            }
+
+            if (availableNumbers.length === 0) {
+                document.getElementById('spinResultDisplay').innerHTML = '❌';
+                state.currentQuestion = TOTAL_QUESTIONS + 1;
+                renderQuestion();
+                showToast("Semua 30 siswa telah mendapat giliran. LKPD Selesai.");
+                return;
+            }
+
+            // --- START DICEROLL ANIMATION ---
+            showDiceModal();
+
+            const cube = document.getElementById('diceCube');
+            cube.classList.add('spinning');
+            
+            const chosenNumber = availableNumbers[Math.floor(Math.random() * availableNumbers.length)];
+
+            // Tunda hasil hingga animasi selesai (3.5 detik)
+            setTimeout(() => {
+                // Stop animation
+                cube.classList.remove('spinning');
+                
+                // Final result display on overlay
+                document.getElementById('diceTitle').innerHTML = `Absen Terpilih! <span style="color: var(--primary-toska);">${chosenNumber}</span>`;
+                document.getElementById('diceCubeContainer').style.display = 'none'; 
+                
+                const finalResultEl = document.getElementById('finalResultDisplay');
+                finalResultEl.innerText = chosenNumber;
+                finalResultEl.style.display = 'block';
+                
+                document.getElementById('continueBtn').style.display = 'block';
+                
+                // Update Global State and UI behind modal
+                state.currentStudent = chosenNumber;
+                document.getElementById('currentAbsenNum').innerText = chosenNumber;
+                document.getElementById('studentNumber').innerText = chosenNumber;
+                document.getElementById('spinResultDisplay').innerText = chosenNumber;
+                
+                document.getElementById('studentName').disabled = false;
+                document.getElementById('submitAnswer').disabled = false;
+
+                showToast(`🎉 Absen ${chosenNumber} terpilih! Silakan isi jawaban.`);
+
+            }, 3500); 
+        }
+
+        /* =========================================================
+           FUNGSI SUBMIT & SCORING (Existing Logic)
+           ========================================================= */
+
+        function calculateScore(pokok, pendukung, keys) {
+            let score = 0;
+            const textCombined = `${pokok} ${pendukung}`.toLowerCase();
+            
+            if (keys.length === 0) return 0;
+            const pointsPerKey = 10 / keys.length; 
+
+            keys.forEach(key => {
+                if (textCombined.includes(key.toLowerCase())) {
+                    score += pointsPerKey;
+                }
+            });
+            
+            return Math.min(Math.round(score), 10); 
+        }
+        
+        function submitAnswer() {
+            if (state.currentQuestion > TOTAL_QUESTIONS || !state.currentStudent) {
+                showToast("⚠️ Spin siswa dulu atau LKPD sudah selesai.");
+                return;
+            }
+
+            const pokok = document.getElementById('mainIdea').value.trim();
+            const pendukung = document.getElementById('supportIdea').value.trim();
+            const name = document.getElementById('studentName').value.trim() || `Siswa Absen ${state.currentStudent}`;
+
+            if (!pokok || !pendukung) {
+                showToast("Ide Pokok dan Ide Pendukung wajib diisi!");
+                document.getElementById('mainIdea').focus();
+                return;
+            }
+
+            const qNum = state.currentQuestion;
+            const questionData = QUESTIONS[qNum - 1];
+            const score = calculateScore(pokok, pendukung, questionData.keys);
+
+            state.answers[`q${qNum}`] = {
+                studentNum: state.currentStudent,
+                name: name,
+                pokok: pokok,
+                pendukung: pendukung,
+                score: score
+            };
+
+            state.usedStudentNumbers.push(state.currentStudent);
+            state.currentStudent = null; 
+            state.currentQuestion++;
+            
+            saveState();
+            
+            renderAnswerTable();
+            renderQuestion();
+            showToast(`✅ Jawaban Soal ${qNum} tersimpan! Skor: ${score}/10`);
+        }
+
+        /* =========================================================
+           FUNGSI RANKING & EXPORT (Existing Logic)
+           ========================================================= */
+
+        function calculateRanking() {
+            const studentScores = {};
+            for (const key in state.answers) {
+                const ans = state.answers[key];
+                const studentNum = ans.studentNum;
+                if (!studentScores[studentNum]) {
+                    studentScores[studentNum] = { name: ans.name, score: 0, count: 0 };
+                }
+                studentScores[studentNum].score += ans.score;
+                studentScores[studentNum].count += 1;
+            }
+
+            let ranking = Object.entries(studentScores).map(([num, data]) => ({
+                num: parseInt(num), name: data.name, score: data.score, count: data.count
+            }));
+
+            ranking.sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                if (b.count !== a.count) return b.count - a.count;
+                return a.num - b.num;
+            });
+
+            return ranking;
+        }
+
+        function showRankingModal() {
+            const ranking = calculateRanking();
+            const tbody = document.getElementById('rankingTableBody');
+            tbody.innerHTML = '';
+            
+            if (ranking.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #666;">Belum ada jawaban yang tersimpan.</td></tr>';
+            } else {
+                ranking.forEach((data, index) => {
+                    const rank = index + 1;
+                    const tr = document.createElement('tr');
+                    
+                    if (rank === 1) tr.classList.add('rank-1');
+                    else if (rank === 2) tr.classList.add('rank-2');
+                    else if (rank === 3) tr.classList.add('rank-3');
+
+                    tr.innerHTML = `
+                        <td>${rank}</td>
+                        <td>${data.num}</td>
+                        <td>${data.name}</td>
+                        <td><strong style="color: var(--dark-text); font-size: 1.1em;">${data.score}</strong> / 300</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            const modal = document.getElementById('rankingModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 500);
+        }
+
+        document.getElementById('rankingModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeModal('rankingModal');
+            }
+        });
+
+        function exportCSV() {
+            const ranking = calculateRanking();
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            csvContent += "DATA JAWABAN PER SOAL\n";
+            let headers = ["No. Soal", "No. Absen", "Nama Siswa", "Ide Pokok", "Ide Pendukung", "Skor (0-10)"];
+            csvContent += headers.join(";") + "\n";
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const answer = state.answers[`q${i}`];
+                if (!answer) continue;
+
+                let row = [];
+                row.push(i);
+                row.push(answer.studentNum);
+                row.push(`"${(answer.name || '').replace(/"/g, '""')}"`);
+                row.push(`"${(answer.pokok || '').replace(/"/g, '""')}"`);
+                row.push(`"${(answer.pendukung || '').replace(/"/g, '""')}"`);
+                row.push(answer.score);
+                
+                csvContent += row.join(";") + "\n";
+            }
+            
+            csvContent += "\nRANKING SISWA\n";
+            csvContent += "Rank;Absen;Nama Siswa;Skor Total;Soal Dijawab\n";
+            ranking.forEach((data, index) => {
+                csvContent += `${index + 1};${data.num};"${data.name.replace(/"/g, '""')}";${data.score};${data.count}\n`;
+            });
+
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `LKPD_Interaktif_IdePokok_Export_${new Date().toISOString().slice(0, 10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("💾 Data berhasil diexport ke CSV!");
+        }
+
+        // Toast Notification (pop-up singkat)
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.innerText = message;
+            toast.style.cssText = `
+                position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+                background-color: var(--dark-text); color: var(--light-bg); padding: 12px 25px;
+                border-radius: 10px; z-index: 1001; opacity: 0; transition: opacity 0.5s;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 1em; font-weight: 600;
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.style.opacity = '1', 10);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(toast), 500);
+            }, 3000);
+        }
+
+        /* =========================================================
+           INITIALIZATION
+           ========================================================= */
+
+        window.onload = function() {
+            loadState();
+            renderQuestion();
+            renderAnswerTable();
+        };
+
+    </script>
+</body>
+</html>

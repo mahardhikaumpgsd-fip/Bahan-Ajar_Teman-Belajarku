@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>🌿 Refleksi Kelompok - Teman Belajarku</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- PDF LIBRARY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        /* =========================================================
+           TEMA UTAMA - DIKUNCI DARI VERSI ASLI
+        ========================================================= */
+
+        :root {
+            --primary-blue: #1e90ff;
+            --dark-blue: #0b3d91;
+            --accent-yellow: #ffd700;
+            --button-shadow: #b8860b;
+            --white: #ffffff;
+            --glass-white: rgba(255, 255, 255, 0.85);
+            --radius-xl: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--dark-blue);
+            color: #333;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            opacity: 0;
+            animation: pageFadeIn 1s forwards;
+        }
+
+        @keyframes pageFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================================================
+           VIDEO BACKGROUND
+        ========================================================= */
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(30, 144, 255, 0.2),
+                rgba(11, 61, 145, 0.85)
+            );
+            z-index: -1;
+        }
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .logo {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8rem;
+            color: var(--dark-blue);
+            text-shadow: 0 2px 0 var(--accent-yellow);
+            letter-spacing: 1px;
+            margin-right: auto;
+            margin-left: 20px;
+        }
+
+        .menu-toggle {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--dark-blue);
+            transition: transform 0.2s;
+            background: var(--white);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            order: -1;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* =========================================================
+           SIDEBAR
+        ========================================================= */
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            z-index: 998;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100%;
+            background: var(--glass-white);
+            backdrop-filter: blur(15px);
+            color: var(--dark-blue);
+            padding-top: 65px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999;
+            box-sizing: border-box;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .sidebar-menu li a {
+            display: block;
+            font-size: 1.1rem;
+            padding: 15px 30px;
+            color: var(--dark-blue);
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            transition: background-color 0.3s, transform 0.2s;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: rgba(30, 144, 255, 0.15);
+            color: var(--primary-blue);
+            transform: translateX(8px);
+        }
+
+        /* =========================================================
+           JUDUL HALAMAN
+        ========================================================= */
+
+        .header-title-box {
+            text-align: center;
+            padding: 25px 20px;
+            margin: 30px auto 10px;
+            max-width: 750px;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(8px);
+            border-radius: var(--radius-xl);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-title-box h1 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--white);
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            letter-spacing: 1.5px;
+            text-shadow:
+                0 4px 0 var(--dark-blue),
+                0 0 15px rgba(255,255,255,0.3);
+            margin-bottom: 10px;
+        }
+
+        .header-title-box p {
+            color: var(--accent-yellow);
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        main {
+            padding: 0 15px 100px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* =========================================================
+           CARD FORM
+        ========================================================= */
+
+        .card {
+            background: var(--glass-white);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-xl);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 650px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .card h2 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--dark-blue);
+            margin-top: 0;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .card-intro {
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #444;
+        }
+
+        label {
+            font-weight: 700;
+            color: var(--dark-blue);
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid rgba(11, 61, 145, 0.2);
+            border-radius: 12px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            box-sizing: border-box;
+            margin-bottom: 18px;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+            line-height: 1.6;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.4);
+            outline: none;
+            background-color: #fff;
+        }
+
+        /* =========================================================
+           KOTAK PETUNJUK KELOMPOK
+        ========================================================= */
+
+        .group-note {
+            background: rgba(30, 144, 255, 0.10);
+            border: 2px dashed rgba(30, 144, 255, 0.35);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .group-note strong {
+            color: var(--dark-blue);
+        }
+
+        /* =========================================================
+           TOMBOL
+        ========================================================= */
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .cta-button-sub {
+            position: relative;
+            background-color: var(--accent-yellow);
+            color: var(--dark-blue);
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.05rem;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 0 var(--button-shadow);
+            transition: all 0.15s ease;
+            user-select: none;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button-sub:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 8px 15px rgba(255, 215, 0, 0.4),
+                0 6px 0 var(--button-shadow);
+            filter: brightness(1.05);
+        }
+
+        .cta-button-sub:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--button-shadow);
+        }
+
+        .btn-pengembang {
+            background-color: #ff3b30 !important;
+            color: #ffffff !important;
+            box-shadow: 0 6px 0 #c02b22 !important;
+        }
+
+        .btn-pengembang:hover {
+            box-shadow:
+                0 8px 15px rgba(255, 59, 48, 0.5),
+                0 6px 0 #c02b22 !important;
+            filter: brightness(1.1) !important;
+        }
+
+        .btn-pengembang:active {
+            box-shadow: 0 2px 0 #c02b22 !important;
+        }
+
+        /* =========================================================
+           TASKBAR
+        ========================================================= */
+
+        #taksbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            color: var(--dark-blue);
+            padding: 15px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
+            z-index: 999;
+            text-align: center;
+            box-sizing: border-box;
+            border-top: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        #taksbar p {
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        #taksbar button {
+            width: auto;
+            margin: 0;
+        }
+
+        @media (min-width: 600px) {
+            #taksbar {
+                flex-direction: row;
+            }
+
+            #taksbar p {
+                margin: 0;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* =========================================================
+           DATA REFLEKSI
+        ========================================================= */
+
+        #data-refleksi {
+            margin-top: 30px;
+            overflow-x: auto;
+            padding: 0 15px;
+        }
+
+        #data-refleksi table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+            min-width: 800px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        #data-refleksi th,
+        #data-refleksi td {
+            padding: 12px 15px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            vertical-align: top;
+        }
+
+        #data-refleksi th {
+            font-family: 'Fredoka One', cursive;
+            background-color: var(--dark-blue);
+            color: var(--white);
+            font-weight: normal;
+            font-size: 1.05rem;
+        }
+
+        /* =========================================================
+           ANIMASI PITA
+        ========================================================= */
+
+        #pitaContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 998;
+        }
+
+        .pita {
+            position: absolute;
+            width: 15px;
+            height: 30px;
+            border-radius: 50%;
+            animation: jatuh 3s linear forwards;
+            opacity: 0.8;
+        }
+
+        @keyframes jatuh {
+            0% {
+                top: -50px;
+                opacity: 1;
+                transform: rotate(0deg) scale(1);
+            }
+
+            100% {
+                top: 100vh;
+                opacity: 0;
+                transform: rotate(720deg) scale(0.5);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================================================
+           TRANSISI HALAMAN
+        ========================================================= */
+
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-blue);
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        .transition-overlay.active {
+            opacity: 1;
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        .footer {
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            color: var(--dark-blue);
+            padding: 18px 5%;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 10;
+            border-top: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 480px) {
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         VIDEO BACKGROUND
+    ========================================================= -->
+
+    <div class="video-background">
+        <video autoplay loop muted playsinline id="backgroundVideo">
+            <source src="index.mp4" type="video/mp4">
+            Browser Anda tidak mendukung video tag.
+        </video>
+    </div>
+
+    <div class="video-overlay"></div>
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================= -->
+
+    <nav class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+
+            <li>
+                <a href="javascript:void(0)"
+                    onclick="navigateTo('index.html')">
+                    🏠 Beranda
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)"
+                    onclick="navigateTo('petunjuk.html')">
+                    💡 Petunjuk
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)"
+                    onclick="navigateTo('tujuan.html')">
+                    🎯 Tujuan Pembelajaran
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)"
+                    onclick="navigateTo('materi.html')">
+                    📚 Materi
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)"
+                    onclick="navigateTo('lkpd.html')">
+                    📝 LKPD
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)"
+                    onclick="navigateTo('refleksi.html')">
+                    🌟 Refleksi
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)"
+                    onclick="navigateTo('profil.html')">
+                    Profil Pengembang
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+    <div class="sidebar-overlay"
+        id="sidebarOverlay"
+        onclick="toggleSidebar()">
+    </div>
+
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
+
+    <header class="header">
+
+        <div class="menu-toggle"
+            id="menuToggle"
+            onclick="toggleSidebar()">
+            ☰
+        </div>
+
+        <div class="logo">
+            Teman Belajarku
+        </div>
+
+        <div></div>
+
+    </header>
+
+    <!-- =========================================================
+         JUDUL HALAMAN
+    ========================================================= -->
+
+    <div class="header-title-box">
+
+        <h1>🌿 REFLEKSI KELOMPOK</h1>
+
+        <p>
+            Hebat! Kalian sudah menyelesaikan LKPD bersama.
+            Sekarang, yuk, ceritakan pengalaman belajar kelompok kalian!
+        </p>
+
+    </div>
+
+    <main>
+
+        <!-- =====================================================
+             FORM REFLEKSI KELOMPOK
+        ===================================================== -->
+
+        <section id="form-refleksi">
+
+            <form class="card"
+                id="refleksiForm"
+                onsubmit="return false;">
+
+                <h2>
+                    Ceritakan Pengalaman Kelompokmu!
+                </h2>
+
+                <p class="card-intro">
+                    Diskusikan pertanyaan berikut bersama seluruh anggota
+                    kelompok. Tuliskan jawaban berdasarkan hasil kesepakatan
+                    kelompok kalian.
+                </p>
+
+                <!-- PETUNJUK -->
+                <div class="group-note">
+
+                    <strong>Petunjuk:</strong>
+                    Pastikan semua anggota kelompok ikut berdiskusi.
+                    Jawaban yang dituliskan merupakan hasil kesepakatan
+                    bersama, bukan jawaban satu orang saja.
+
+                </div>
+
+                <!-- NAMA KELOMPOK -->
+                <label for="namaKelompok">
+                    Nama Kelompok:
+                </label>
+
+                <input type="text"
+                    id="namaKelompok"
+                    placeholder="Contoh: Kelompok Cerdas"
+                    required>
+
+                <!-- ANGGOTA KELOMPOK -->
+                <label for="anggotaKelompok">
+                    Anggota Kelompok:
+                </label>
+
+                <textarea
+                    id="anggotaKelompok"
+                    placeholder="Tuliskan nama seluruh anggota kelompok..."
+                    required></textarea>
+
+                <!-- PEMAHAMAN -->
+                <label for="pemahaman">
+                    1. Apa yang sudah kelompok kalian pahami
+                    tentang ide pokok dan ide pendukung?
+                </label>
+
+                <textarea
+                    id="pemahaman"
+                    placeholder="Tuliskan hasil pemahaman kelompok kalian..."
+                    required></textarea>
+
+                <!-- BAGIAN MUDAH -->
+                <label for="bagianMudah">
+                    2. Bagian mana yang paling mudah bagi
+                    kelompok kalian? Mengapa?
+                </label>
+
+                <textarea
+                    id="bagianMudah"
+                    placeholder="Tuliskan bagian yang paling mudah dan alasannya..."
+                    required></textarea>
+
+                <!-- BAGIAN SULIT -->
+                <label for="bagianSulit">
+                    3. Bagian mana yang masih terasa sulit
+                    bagi kelompok kalian?
+                </label>
+
+                <textarea
+                    id="bagianSulit"
+                    placeholder="Tuliskan kesulitan yang dialami kelompok..."
+                    required></textarea>
+
+                <!-- CARA MENGATASI -->
+                <label for="caraAtasi">
+                    4. Bagaimana kelompok kalian mengatasi
+                    kesulitan tersebut?
+                </label>
+
+                <textarea
+                    id="caraAtasi"
+                    placeholder="Tuliskan cara kelompok kalian mengatasi kesulitan..."
+                    required></textarea>
+
+                <!-- KERJA SAMA -->
+                <label for="kerjaSama">
+                    5. Bagaimana kerja sama kelompok kalian
+                    saat mengerjakan LKPD?
+                </label>
+
+                <textarea
+                    id="kerjaSama"
+                    placeholder="Ceritakan bagaimana anggota kelompok bekerja sama..."
+                    required></textarea>
+
+                <!-- KESIMPULAN -->
+                <label for="kesimpulan">
+                    6. Apa kesimpulan kelompok kalian
+                    tentang ide pokok dan ide pendukung?
+                </label>
+
+                <textarea
+                    id="kesimpulan"
+                    placeholder="Tuliskan kesimpulan hasil diskusi kelompok..."
+                    required></textarea>
+
+                <!-- KOMITMEN -->
+                <label for="komitmen">
+                    7. Apa yang akan kelompok kalian lakukan
+                    agar lebih mudah menemukan ide pokok dan
+                    ide pendukung pada bacaan berikutnya?
+                </label>
+
+                <textarea
+                    id="komitmen"
+                    placeholder="Tuliskan rencana atau komitmen kelompok..."
+                    required></textarea>
+
+                <!-- TOMBOL -->
+                <div class="button-group">
+
+                    <button
+                        class="cta-button-sub"
+                        id="submitBtn"
+                        type="button">
+                        Simpan Refleksi
+                    </button>
+
+                    <button
+                        class="cta-button-sub"
+                        id="downloadBtn"
+                        type="button">
+                        Download PDF
+                    </button>
+
+                    <button
+                        class="cta-button-sub"
+                        id="resetBtn"
+                        type="button">
+                        Reset Refleksi
+                    </button>
+
+                    <button
+                        class="cta-button-sub"
+                        id="selesaiBtn"
+                        type="button">
+                        Selesai
+                    </button>
+
+                    <button
+                        class="cta-button-sub"
+                        id="berandaBtn"
+                        type="button"
+                        onclick="navigateTo('index.html')">
+                        Kembali ke Beranda
+                    </button>
+
+                    <button
+                        class="cta-button-sub btn-pengembang"
+                        id="pengembangBtn"
+                        type="button"
+                        onclick="navigateTo('profil.html')">
+                        Profil Pengembang
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- =====================================================
+             DATA REFLEKSI
+        ===================================================== -->
+
+        <section id="data-refleksi" class="hidden">
+
+            <h2 style="
+                color: var(--white);
+                text-align: center;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+                font-family: 'Fredoka One', cursive;
+                margin-bottom: 15px;">
+                Data Refleksi Kelompok
+            </h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>No</th>
+                        <th>Kelompok</th>
+                        <th>Anggota</th>
+                        <th>Pemahaman</th>
+                        <th>Bagian Mudah</th>
+                        <th>Bagian Sulit</th>
+                        <th>Cara Mengatasi</th>
+                        <th>Kerja Sama</th>
+                        <th>Kesimpulan</th>
+                        <th>Komitmen</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="refleksiBody"></tbody>
+
+            </table>
+
+        </section>
+
+        <!-- =====================================================
+             TASKBAR SELESAI
+        ===================================================== -->
+
+        <div id="taksbar" class="hidden">
+
+            <p>
+                “Hebat! Kerja sama membuat belajar menjadi lebih menyenangkan! 🤝”
+            </p>
+
+            <button
+                class="cta-button-sub"
+                id="btnBeranda"
+                onclick="navigateTo('index.html')">
+                🏠 Beranda
+            </button>
+
+        </div>
+
+    </main>
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+    <footer class="footer">
+
+        © 2026 Teman Belajarku |
+        Website Pembelajaran Bahasa Indonesia SD
+
+    </footer>
+
+    <div id="pitaContainer" class="hidden"></div>
+
+    <div class="transition-overlay"
+        id="pageOverlay">
+    </div>
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================= -->
+
+    <script>
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        const sidebar =
+            document.getElementById('sidebar');
+
+        const sidebarOverlay =
+            document.getElementById('sidebarOverlay');
+
+
+        /* =====================================================
+           SUARA KLIK
+        ===================================================== */
+
+        function playClickSound() {
+
+            try {
+
+                const audioCtx =
+                    new (
+                        window.AudioContext ||
+                        window.webkitAudioContext
+                    )();
+
+                const oscillator =
+                    audioCtx.createOscillator();
+
+                const gainNode =
+                    audioCtx.createGain();
+
+                oscillator.type = 'sine';
+
+                oscillator.frequency.setValueAtTime(
+                    500,
+                    audioCtx.currentTime
+                );
+
+                oscillator.frequency.exponentialRampToValueAtTime(
+                    800,
+                    audioCtx.currentTime + 0.1
+                );
+
+                gainNode.gain.setValueAtTime(
+                    0.1,
+                    audioCtx.currentTime
+                );
+
+                gainNode.gain.exponentialRampToValueAtTime(
+                    0.01,
+                    audioCtx.currentTime + 0.2
+                );
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+
+                oscillator.stop(
+                    audioCtx.currentTime + 0.2
+                );
+
+            } catch (e) {
+
+                console.log(
+                    "Audio Context membutuhkan interaksi pengguna."
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SIDEBAR TOGGLE
+        ===================================================== */
+
+        function toggleSidebar() {
+
+            playClickSound();
+
+            const isOpen =
+                sidebar.classList.contains('open');
+
+            if (isOpen) {
+
+                sidebar.classList.remove('open');
+
+                sidebarOverlay.classList.remove('active');
+
+            } else {
+
+                sidebar.classList.add('open');
+
+                sidebarOverlay.classList.add('active');
+
+            }
+
+        }
+
+
+        /* =====================================================
+           NAVIGASI
+        ===================================================== */
+
+        function navigateTo(targetUrl) {
+
+            playClickSound();
+
+            const pageOverlay =
+                document.getElementById('pageOverlay');
+
+            if (pageOverlay) {
+
+                pageOverlay.classList.add('active');
+
+            }
+
+            setTimeout(() => {
+
+                window.location.href = targetUrl;
+
+            }, 600);
+
+        }
+
+
+        /* =====================================================
+           LOCAL STORAGE
+        ===================================================== */
+
+        const getRefleksiList = () =>
+            JSON.parse(
+                localStorage.getItem("refleksiKelompokList")
+            ) || [];
+
+
+        /* =====================================================
+           SIMPAN REFLEKSI KELOMPOK
+        ===================================================== */
+
+        document
+            .getElementById("submitBtn")
+            .addEventListener("click", () => {
+
+                playClickSound();
+
+                const namaKelompok =
+                    document.getElementById("namaKelompok");
+
+                const anggotaKelompok =
+                    document.getElementById("anggotaKelompok");
+
+                const pemahaman =
+                    document.getElementById("pemahaman");
+
+                const bagianMudah =
+                    document.getElementById("bagianMudah");
+
+                const bagianSulit =
+                    document.getElementById("bagianSulit");
+
+                const caraAtasi =
+                    document.getElementById("caraAtasi");
+
+                const kerjaSama =
+                    document.getElementById("kerjaSama");
+
+                const kesimpulan =
+                    document.getElementById("kesimpulan");
+
+                const komitmen =
+                    document.getElementById("komitmen");
+
+
+                /* VALIDASI */
+
+                if (
+                    !namaKelompok.value.trim() ||
+                    !anggotaKelompok.value.trim() ||
+                    !pemahaman.value.trim() ||
+                    !bagianMudah.value.trim() ||
+                    !bagianSulit.value.trim() ||
+                    !caraAtasi.value.trim() ||
+                    !kerjaSama.value.trim() ||
+                    !kesimpulan.value.trim() ||
+                    !komitmen.value.trim()
+                ) {
+
+                    alert(
+                        "🤝 Mohon lengkapi seluruh refleksi kelompok terlebih dahulu!"
+                    );
+
+                    return;
+
+                }
+
+
+                /* DATA */
+
+                const data = {
+
+                    namaKelompok:
+                        namaKelompok.value.trim(),
+
+                    anggota:
+                        anggotaKelompok.value.trim(),
+
+                    pemahaman:
+                        pemahaman.value.trim(),
+
+                    bagianMudah:
+                        bagianMudah.value.trim(),
+
+                    bagianSulit:
+                        bagianSulit.value.trim(),
+
+                    caraAtasi:
+                        caraAtasi.value.trim(),
+
+                    kerjaSama:
+                        kerjaSama.value.trim(),
+
+                    kesimpulan:
+                        kesimpulan.value.trim(),
+
+                    komitmen:
+                        komitmen.value.trim()
+
+                };
+
+
+                /* SIMPAN */
+
+                let refleksiList =
+                    getRefleksiList();
+
+                refleksiList.push(data);
+
+                localStorage.setItem(
+                    "refleksiKelompokList",
+                    JSON.stringify(refleksiList)
+                );
+
+
+                alert(
+                    `🎉 Refleksi ${data.namaKelompok} berhasil disimpan!`
+                );
+
+
+                document
+                    .getElementById("refleksiForm")
+                    .reset();
+
+            });
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        document
+            .getElementById("resetBtn")
+            .addEventListener("click", () => {
+
+                playClickSound();
+
+                if (
+                    confirm(
+                        "Yakin ingin menghapus semua data refleksi kelompok? Tindakan ini tidak dapat dibatalkan!"
+                    )
+                ) {
+
+                    localStorage.removeItem(
+                        "refleksiKelompokList"
+                    );
+
+                    window.location.reload();
+
+                }
+
+            });
+
+
+        /* =====================================================
+           DOWNLOAD PDF
+        ===================================================== */
+
+        document
+            .getElementById("downloadBtn")
+            .addEventListener("click", () => {
+
+                playClickSound();
+
+                const { jsPDF } =
+                    window.jspdf;
+
+                const doc =
+                    new jsPDF();
+
+                const data =
+                    getRefleksiList();
+
+
+                if (data.length === 0) {
+
+                    alert(
+                        "Tidak ada data refleksi kelompok untuk diunduh!"
+                    );
+
+                    return;
+
+                }
+
+
+                doc.setFontSize(16);
+
+                doc.setTextColor(
+                    11,
+                    61,
+                    145
+                );
+
+                doc.text(
+                    "Laporan Refleksi Kelompok",
+                    105,
+                    15,
+                    null,
+                    null,
+                    "center"
+                );
+
+
+                let y = 30;
+
+                const maxWidth = 180;
+
+
+                data.forEach((r, i) => {
+
+                    if (y > 260) {
+
+                        doc.addPage();
+
+                        y = 20;
+
+                    }
+
+
+                    /* JUDUL KELOMPOK */
+
+                    doc.setFontSize(12);
+
+                    doc.setTextColor(
+                        30,
+                        144,
+                        255
+                    );
+
+                    doc.text(
+                        `— KELOMPOK ${i + 1}: ${r.namaKelompok} —`,
+                        10,
+                        y
+                    );
+
+                    y += 6;
+
+
+                    doc.setFontSize(10);
+
+                    doc.setTextColor(
+                        51,
+                        51,
+                        51
+                    );
+
+
+                    /* ANGGOTA */
+
+                    doc.setFont(undefined, 'bold');
+
+                    doc.text(
+                        'Anggota:',
+                        10,
+                        y
+                    );
+
+                    doc.setFont(undefined, 'normal');
+
+                    const anggotaLines =
+                        doc.splitTextToSize(
+                            r.anggota,
+                            145
+                        );
+
+                    doc.text(
+                        anggotaLines,
+                        45,
+                        y
+                    );
+
+                    y +=
+                        anggotaLines.length * 4.5 +
+                        3;
+
+
+                    /* PEMAHAMAN */
+
+                    doc.setFont(undefined, 'bold');
+
+                    doc.text(
+                        'Pemahaman:',
+                        10,
+                        y
+                    );
+
+                    doc.setFont(undefined, 'normal');
+
+                    const pemahamanLines =
+                        doc.splitTextToSize(
+                            r.pemahaman,
+                            maxWidth
+                        );
+
+                    doc.text(
+                        pemahamanLines,
+                        45,
+                        y
+                    );
+
+                    y +=
+                        pemahamanLines.length * 4.5;
+
+
+                    /* BAGIAN MUDAH */
+
+                    doc.setFont(undefined, 'bold');
+
+                    doc.text(
+                        'Bagian Mudah:',
+                        10,
+                        y
+                    );
+
+                    doc.setFont(undefined, 'normal');
+
+                    const mudahLines =
+                        doc.splitTextToSize(
+                            r.bagianMudah,
+                            140
+                        );
+
+                    doc.text(
+                        mudahLines,
+                        50,
+                        y
+                    );
+
+                    y +=
+                        mudahLines.length * 4.5;
+
+
+                    /* BAGIAN SULIT */
+
+                    doc.setFont(undefined, 'bold');
+
+                    doc.text(
+                        'Bagian Sulit:',
+                        10,
+                        y
+                    );
+
+                    doc.setFont(undefined, 'normal');
+
+                    const sulitLines =
+                        doc.splitTextToSize(
+                            r.bagianSulit,
+                            140
+                        );
+
+                    doc.text(
+                        sulitLines,
+                        50,
+                        y
+                    );
+
+                    y +=
+                        sulitLines.length * 4.5;
+
+
+                    /* CARA MENGATASI */
+
+                    doc.setFont(undefined, 'bold');
+
+                    doc.text(
+                        'Cara Mengatasi:',
+                        10,
+                        y
+                    );
+
+                    doc.setFont(undefined, 'normal');
+
+                    const caraLines =
+                        doc.splitTextToSize(
+                            r.caraAtasi,
+                            135
+                        );
+
+                    doc.text(
+                        caraLines,
+                        55,
+                        y
+                    );
+
+                    y +=
+                        caraLines.length * 4.5;
+
+
+                    /* KERJA SAMA */
+
+                    doc.setFont(undefined, 'bold');
+
+                    doc.text(
+                        'Kerja Sama:',
+                        10,
+                        y
+                    );
+
+                    doc.setFont(undefined, 'normal');
+
+                    const kerjaLines =
+                        doc.splitTextToSize(
+                            r.kerjaSama,
+                            140
+                        );
+
+                    doc.text(
+                        kerjaLines,
+                        50,
+                        y
+                    );
+
+                    y +=
+                        kerjaLines.length * 4.5;
+
+
+                    /* KESIMPULAN */
+
+                    doc.setFont(undefined, 'bold');
+
+                    doc.text(
+                        'Kesimpulan:',
+                        10,
+                        y
+                    );
+
+                    doc.setFont(undefined, 'normal');
+
+                    const kesimpulanLines =
+                        doc.splitTextToSize(
+                            r.kesimpulan,
+                            140
+                        );
+
+                    doc.text(
+                        kesimpulanLines,
+                        50,
+                        y
+                    );
+
+                    y +=
+                        kesimpulanLines.length * 4.5;
+
+
+                    /* KOMITMEN */
+
+                    doc.setFont(undefined, 'bold');
+
+                    doc.text(
+                        'Komitmen:',
+                        10,
+                        y
+                    );
+
+                    doc.setFont(undefined, 'normal');
+
+                    const komitmenLines =
+                        doc.splitTextToSize(
+                            r.komitmen,
+                            145
+                        );
+
+                    doc.text(
+                        komitmenLines,
+                        45,
+                        y
+                    );
+
+                    y +=
+                        komitmenLines.length * 4.5;
+
+                    y += 8;
+
+                });
+
+
+                doc.save(
+                    "Refleksi_Kelompok_Teman_Belajarku.pdf"
+                );
+
+            });
+
+
+        /* =====================================================
+           TOMBOL SELESAI
+        ===================================================== */
+
+        document
+            .getElementById("selesaiBtn")
+            .addEventListener("click", () => {
+
+                playClickSound();
+
+                const pitaContainer =
+                    document.getElementById(
+                        "pitaContainer"
+                    );
+
+                pitaContainer.classList.remove(
+                    "hidden"
+                );
+
+
+                const colors = [
+                    "#FFEB3B",
+                    "#FF5722",
+                    "#4CAF50",
+                    "#03A9F4",
+                    "#FFC107",
+                    "#E91E63",
+                    "#00BCD4"
+                ];
+
+
+                for (
+                    let i = 0;
+                    i < 50;
+                    i++
+                ) {
+
+                    const pita =
+                        document.createElement(
+                            "div"
+                        );
+
+                    pita.classList.add(
+                        "pita"
+                    );
+
+                    pita.style.left =
+                        Math.random() *
+                        window.innerWidth +
+                        "px";
+
+                    pita.style.animationDelay =
+                        Math.random() *
+                        0.5 +
+                        "s";
+
+                    pita.style.background =
+                        colors[
+                            Math.floor(
+                                Math.random() *
+                                colors.length
+                            )
+                        ];
+
+                    pitaContainer.appendChild(
+                        pita
+                    );
+
+
+                    setTimeout(
+                        () => pita.remove(),
+                        3000
+                    );
+
+                }
+
+
+                const taksbar =
+                    document.getElementById(
+                        "taksbar"
+                    );
+
+                taksbar.classList.remove(
+                    "hidden"
+                );
+
+
+                setTimeout(
+                    () =>
+                        pitaContainer.classList.add(
+                            "hidden"
+                        ),
+                    3000
+                );
+
+            });
+
+
+        /* =====================================================
+           TUTUP TASKBAR
+        ===================================================== */
+
+        document.addEventListener(
+            "click",
+            (e) => {
+
+                const taksbar =
+                    document.getElementById(
+                        "taksbar"
+                    );
+
+                const selesaiBtn =
+                    document.getElementById(
+                        "selesaiBtn"
+                    );
+
+
+                if (
+                    !taksbar.classList.contains(
+                        "hidden"
+                    )
+                ) {
+
+                    if (
+                        !taksbar.contains(
+                            e.target
+                        ) &&
+                        !selesaiBtn.contains(
+                            e.target
+                        )
+                    ) {
+
+                        taksbar.classList.add(
+                            "hidden"
+                        );
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           LOAD PAGE
+        ===================================================== */
+
+        window.addEventListener(
+            'load',
+            () => {
+
+                const video =
+                    document.getElementById(
+                        'backgroundVideo'
+                    );
+
+                if (video) {
+
+                    video.play().catch(
+                        e =>
+                            console.log(
+                                "Autoplay video background dimatikan browser."
+                            )
+                    );
+
+                }
+
+
+                /* TAMPILKAN DATA TERSIMPAN */
+
+                const dataSection =
+                    document.getElementById(
+                        "data-refleksi"
+                    );
+
+                const refleksiList =
+                    getRefleksiList();
+
+                const tbody =
+                    document.getElementById(
+                        "refleksiBody"
+                    );
+
+
+                if (
+                    refleksiList.length > 0
+                ) {
+
+                    dataSection.classList.remove(
+                        "hidden"
+                    );
+
+
+                    tbody.innerHTML =
+                        refleksiList
+                            .map(
+                                (r, i) => `
+
+                                <tr>
+
+                                    <td>
+                                        ${i + 1}
+                                    </td>
+
+                                    <td>
+                                        ${r.namaKelompok}
+                                    </td>
+
+                                    <td>
+                                        ${r.anggota}
+                                    </td>
+
+                                    <td>
+                                        ${r.pemahaman}
+                                    </td>
+
+                                    <td>
+                                        ${r.bagianMudah}
+                                    </td>
+
+                                    <td>
+                                        ${r.bagianSulit}
+                                    </td>
+
+                                    <td>
+                                        ${r.caraAtasi}
+                                    </td>
+
+                                    <td>
+                                        ${r.kerjaSama}
+                                    </td>
+
+                                    <td>
+                                        ${r.kesimpulan}
+                                    </td>
+
+                                    <td>
+                                        ${r.komitmen}
+                                    </td>
+
+                                </tr>
+
+                            `
+                            )
+                            .join('');
+
+                } else {
+
+                    dataSection.classList.add(
+                        "hidden"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

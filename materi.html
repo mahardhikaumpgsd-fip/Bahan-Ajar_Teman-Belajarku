@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+      <meta charset="UTF-8">
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <title>Materi | Ide Pokok dan Ide Pendukung</title>
+
+
+
+      <!-- Google Fonts disesuaikan dengan file index.html -->
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+
+      <link rel="preconnect" href="https://gstatic.com" crossorigin>
+
+      <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
+
+
+
+      <style>
+
+          /* Variabel Warna & Tema disesuaikan dengan index.html */
+
+          :root {
+
+              --primary-blue: #1e90ff;
+
+              --dark-blue: #0b3d91;
+
+              --accent-yellow: #ffd700;
+
+              --button-shadow: #b8860b;
+
+              --white: #ffffff;
+
+              --glass-white: rgba(255, 255, 255, 0.85);
+
+              --shadow-ringan: rgba(0, 0, 0, 0.2);
+
+              --bayangan-biru: rgba(30, 144, 255, 0.4);
+
+              --oranye-lembut: #ffab40;
+
+          }
+
+
+
+          * {
+
+              margin: 0;
+
+              padding: 0;
+
+              box-sizing: border-box;
+
+              -webkit-tap-highlight-color: transparent;
+
+          }
+
+
+
+          /* Reset & Typography */
+
+          body {
+
+              font-family: 'Quicksand', sans-serif;
+
+              margin: 0;
+
+              padding: 0;
+
+              line-height: 1.7;
+
+              color: #333;
+
+              background-color: var(--dark-blue);
+
+              overflow-x: hidden;
+
+              min-height: 100vh;
+
+              position: relative;
+
+              opacity: 0;
+
+              animation: pageFadeIn 1s forwards;
+
+          }
+
+
+
+          @keyframes pageFadeIn {
+
+              to { opacity: 1; }
+
+          }
+
+
+
+          a { text-decoration: none; color: inherit; }
+
+
+
+          /* --- VIDEO BACKGROUND SETUP --- */
+
+          .video-background {
+
+              position: fixed;
+
+              top: 0;
+
+              left: 0;
+
+              width: 100%;
+
+              height: 100%;
+
+              z-index: -2;
+
+              overflow: hidden;
+
+          }
+
+
+
+          .video-background img {
+
+              min-width: 100%;
+
+              min-height: 100%;
+
+              width: auto;
+
+              height: auto;
+
+              position: absolute;
+
+              top: 50%;
+
+              left: 50%;
+
+              transform: translate(-50%, -50%);
+
+              object-fit: cover;
+
+          }
+
+
+
+          /* --- OVERLAY TRANSPARAN --- */
+
+          .video-overlay {
+
+              position: fixed;
+
+              top: 0;
+
+              left: 0;
+
+              width: 100%;
+
+              height: 100%;
+
+              background: linear-gradient(135deg, rgba(30, 144, 255, 0.2), rgba(11, 61, 145, 0.85));
+
+              z-index: -1;
+
+          }
+
+
+
+          /* Header & Taskbar Glassmorphism */
+
+          .navbar-header {
+
+              display: flex;
+
+              justify-content: space-between;
+
+              align-items: center;
+
+              padding: 12px 5%;&#x20;
+
+              background: var(--glass-white);&#x20;
+
+              backdrop-filter: blur(10px);
+
+              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+              position: sticky;
+
+              top: 0;
+
+              z-index: 1000;
+
+              border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+
+          }
+
+
+
+          .logo {
+
+              font-family: 'Fredoka One', cursive;&#x20;
+
+              font-size: 1.5rem;
+
+              color: var(--dark-blue);
+
+              text-shadow: 0 2px 0 var(--accent-yellow);&#x20;
+
+              letter-spacing: 1px;
+
+              margin-right: auto;&#x20;
+
+              margin-left: 20px;
+
+          }
+
+
+
+          .menu-toggle {
+
+              font-family: 'Fredoka One', cursive;
+
+              font-size: 2rem;
+
+              cursor: pointer;
+
+              color: var(--dark-blue);
+
+              transition: transform 0.2s;
+
+              background: var(--white);
+
+              border-radius: 50%;
+
+              width: 45px;
+
+              height: 45px;
+
+              display: flex;
+
+              justify-content: center;
+
+              align-items: center;
+
+              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+              border: 2px solid rgba(255, 255, 255, 0.5);
+
+              order: -1;
+
+          }
+
+
+
+          .menu-toggle:hover {
+
+              transform: scale(1.1);
+
+          }
+
+
+
+          /* Overlay Sidebar Darken */
+
+          .sidebar-overlay {
+
+              position: fixed;
+
+              top: 0;
+
+              left: 0;
+
+              width: 100%;
+
+              height: 100%;
+
+              background: rgba(0, 0, 0, 0.5);
+
+              backdrop-filter: blur(3px);
+
+              z-index: 998;
+
+              display: none;
+
+              opacity: 0;
+
+              transition: opacity 0.4s ease;
+
+          }
+
+
+
+          .sidebar-overlay.active {
+
+              display: block;
+
+              opacity: 1;
+
+          }
+
+
+
+          /* Sidebar Navigasi Glassmorphism */
+
+          .sidebar {
+
+              position: fixed;
+
+              top: 0;
+
+              left: 0;
+
+              width: 280px;&#x20;
+
+              height: 100%;
+
+              background: var(--glass-white);
+
+              backdrop-filter: blur(15px);
+
+              color: var(--dark-blue);
+
+              padding-top: 65px;
+
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);&#x20;
+
+              transform: translateX(-100%);
+
+              transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+              z-index: 999;
+
+              box-sizing: border-box;
+
+          }
+
+
+
+          .sidebar.open {
+
+              transform: translateX(0);
+
+          }
+
+
+
+          .sidebar-menu {
+
+              list-style: none;
+
+              padding: 0;
+
+              margin: 20px 0;
+
+          }
+
+
+
+          .sidebar-menu li a {
+
+              display: block;
+
+              font-size: 1.1rem;&#x20;
+
+              padding: 15px 30px;&#x20;
+
+              color: var(--dark-blue);
+
+              font-family: 'Quicksand', sans-serif;
+
+              font-weight: 700;
+
+              transition: background-color 0.3s, transform 0.2s;
+
+              border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+              text-decoration: none;
+
+          }
+
+
+
+          .sidebar-menu li a:hover,
+
+          .sidebar-menu li a.active {
+
+              background-color: rgba(30, 144, 255, 0.15);
+
+              color: var(--primary-blue);
+
+              transform: translateX(8px);
+
+          }
+
+        .main-content {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px 5%;
+            animation: fadeIn 1s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+
+
+          .section-card {
+
+              background-color: #ffffff;
+
+              padding: 30px;
+
+              border-radius: 20px;
+
+              box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+
+              margin-bottom: 35px;
+
+              border-left: 8px solid var(--primary-blue);
+
+              animation: fadeIn 1s ease-out forwards;
+
+              opacity: 0;
+
+              transform: translateY(20px);
+
+          }
+
+
+
+          /* Aksesibilitas khusus untuk Card Ide Pendukung (border-left oranye) */
+
+          .section-card.pendukung-card {
+
+              border-left-color: var(--oranye-lembut);
+
+          }
+
+
+
+          .section-card.pendukung-card h2 {
+
+              border-bottom-color: var(--oranye-lembut);
+
+          }
+
+
+
+          .section-card h2 {
+
+              font-family: 'Fredoka One', cursive;
+
+              font-size: 1.8rem;
+
+              color: var(--dark-blue);
+
+              border-bottom: 3px solid var(--primary-blue);
+
+              padding-bottom: 10px;
+
+              margin-top: 0;
+
+              margin-bottom: 15px;
+
+          }
+
+
+
+          .section-card p {
+
+              margin-bottom: 12px;
+
+          }
+
+
+
+          /* List Styling untuk Ciri-Ciri */
+
+          .feature-list {
+
+              list-style: none;
+
+              padding: 0;
+
+              margin: 10px 0;
+
+          }
+
+
+
+          .feature-list li {
+
+              position: relative;
+
+              padding-left: 28px;
+
+              margin-bottom: 15px;
+
+              line-height: 1.6;
+
+          }
+
+
+
+          .feature-list li::before {
+
+              content: "✔";
+
+              position: absolute;
+
+              left: 0;
+
+              top: 0;
+
+              color: var(--primary-blue);
+
+              font-weight: bold;
+
+              font-size: 1.1rem;
+
+          }
+
+
+
+          /* List Ciri-ciri Ide Pendukung (Warna Oranye) */
+
+          .feature-list.pendukung-list li::before {
+
+              color: var(--oranye-lembut);
+
+          }
+
+
+
+          /* Callout Box untuk Contoh */
+
+          .example-box {
+
+              background-color: #f8f9fa;
+
+              border-left: 4px solid var(--oranye-lembut);
+
+              padding: 15px 20px;
+
+              border-radius: 8px;
+
+              margin: 15px 0;
+
+              font-size: 1.05rem;
+
+          }
+
+
+
+          .highlight-result {
+
+              background-color: rgba(255, 215, 0, 0.25);
+
+              border-radius: 10px;
+
+              padding: 15px;
+
+              margin-top: 15px;
+
+              border: 1px dashed var(--button-shadow);
+
+          }
+
+
+
+          .highlight-result ul {
+
+              margin: 8px 0 0 20px;
+
+              padding: 0;
+
+          }
+
+
+
+          .highlight-result ul li {
+
+              margin-bottom: 6px;
+
+              font-weight: 700;
+
+          }
+
+
+
+          #intro-card {
+
+              border-left-color: var(--accent-yellow);
+
+              background: #ffffff;
+
+              animation-delay: 0.1s;
+
+          }
+
+
+
+          #intro-card p {
+
+              font-size: 1.1rem;
+
+              font-weight: 700;
+
+              color: #2c3e50;
+
+          }
+
+
+
+          .interactive-example {
+
+              padding: 20px;
+
+              border-radius: 15px;
+
+              background-color: rgba(255, 234, 167, 0.4);
+
+              margin-top: 20px;
+
+              border: 2px solid var(--accent-yellow);
+
+          }
+
+
+
+          .interactive-example p {
+
+              background-color: var(--white);
+
+              padding: 12px;
+
+              margin: 8px 0;
+
+              border-radius: 10px;
+
+              cursor: pointer;
+
+              transition: all 0.3s;
+
+              border: 2px solid #ddd;
+
+              font-weight: 700;
+
+          }
+
+
+
+          .interactive-example p:hover {
+
+              background-color: var(--white);
+
+              border-color: var(--primary-blue);
+
+              transform: scale(1.02);
+
+          }
+
+
+
+          .feedback {
+
+              margin-top: 15px;
+
+              font-weight: 700;
+
+              padding: 12px;
+
+              border-radius: 10px;
+
+              display: none;
+
+              text-align: center;
+
+          }
+
+
+
+          .feedback.correct {
+
+              background-color: #d4edda;
+
+              color: #155724;
+
+              border: 1px solid #c3e6cb;
+
+          }
+
+
+
+          .feedback.incorrect {
+
+              background-color: #f8d7da;
+
+              color: #721c24;
+
+              border: 1px solid #f5c6cb;
+
+          }
+
+
+
+          .quiz-item {
+
+              border: 2px solid var(--primary-blue);
+
+              padding: 20px;
+
+              border-radius: 15px;
+
+              margin-bottom: 20px;
+
+              background-color: #ffffff;
+
+          }
+
+
+
+          .quiz-item strong {
+
+              font-family: 'Fredoka One', cursive;
+
+              display: block;
+
+              margin-bottom: 10px;
+
+              color: var(--dark-blue);
+
+              font-size: 1.2rem;
+
+          }
+
+
+
+          .option-group label {
+
+              display: flex;
+
+              align-items: center;
+
+              gap: 12px;
+
+              background-color: #f8f9fa;
+
+              padding: 12px 15px;
+
+              margin: 8px 0;
+
+              border-radius: 10px;
+
+              cursor: pointer;
+
+              transition: all 0.2s;
+
+              border: 2px solid #e9ecef;
+
+              font-weight: 700;
+
+          }
+
+
+
+          .option-group label:hover {
+
+              background-color: rgba(30, 144, 255, 0.1);
+
+              border-color: var(--primary-blue);
+
+          }
+
+
+
+          .option-group input[type="radio"] {
+
+              margin: 0;
+
+              width: 18px;
+
+              height: 18px;
+
+              cursor: pointer;
+
+          }
+
+
+
+          .option-group input[type="radio"]:checked + span {
+
+              font-weight: 800;
+
+              color: var(--dark-blue);
+
+          }
+
+
+
+          #result-feedback {
+
+              margin-top: 20px;
+
+              padding: 15px;
+
+              border-radius: 10px;
+
+              font-weight: 700;
+
+              text-align: center;
+
+              display: none;
+
+              transition: all 0.5s;
+
+          }
+
+
+
+          /* Navigation Buttons */
+
+          .footer-nav {
+
+              display: flex;
+
+              gap: 20px;
+
+              margin: 40px auto 20px auto;
+
+              justify-content: center;
+
+              flex-wrap: wrap;
+
+              position: relative;
+
+              z-index: 10;
+
+          }
+
+
+
+          .nav-btn {
+
+              position: relative;
+
+              font-family: 'Fredoka One', cursive;
+
+              font-size: 1.2rem;
+
+              padding: 16px 32px;
+
+              border: none;
+
+              border-radius: 20px;
+
+              cursor: pointer;
+
+              transition: all 0.15s ease;
+
+              user-select: none;
+
+              outline: none;
+
+              text-decoration: none;
+
+              text-transform: uppercase;
+
+              letter-spacing: 1px;
+
+              text-align: center;
+
+              display: inline-flex;
+
+              align-items: center;
+
+              justify-content: center;
+
+              gap: 10px;
+
+          }
+
+
+
+          .nav-btn.back {
+
+              background-color: var(--white);
+
+              color: var(--dark-blue);
+
+              box-shadow: 0 8px 0 #b0bec5;
+
+              border: 2px solid rgba(0,0,0,0.1);
+
+          }
+
+
+
+          .nav-btn.back:hover {
+
+              transform: scale(1.08) translateY(-4px);
+
+              box-shadow: 0 12px 20px rgba(255, 255, 255, 0.4), 0 8px 0 #b0bec5;
+
+              background-color: #ffffff;
+
+          }
+
+
+
+          .nav-btn.back:active {
+
+              transform: translateY(4px);
+
+              box-shadow: 0 3px 0 #b0bec5;
+
+          }
+
+
+
+          .nav-btn.next {
+
+              background-color: var(--accent-yellow);
+
+              color: var(--dark-blue);
+
+              box-shadow: 0 8px 0 var(--button-shadow);
+
+          }
+
+
+
+          .nav-btn.next:hover {
+
+              transform: scale(1.08) translateY(-4px);
+
+              box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4), 0 8px 0 var(--button-shadow);
+
+              filter: brightness(1.1);
+
+          }
+
+
+
+          .nav-btn.next:active {
+
+              transform: translateY(4px);
+
+              box-shadow: 0 3px 0 var(--button-shadow);
+
+          }
+
+
+
+          .floating-asset {
+
+              position: fixed;
+
+              font-size: 3rem;
+
+              opacity: 0.6;
+
+              z-index: 5;
+
+              animation: float 5s ease-in-out infinite alternate;
+
+          }
+
+
+
+          @keyframes float {
+
+              0%, 100% { transform: translateY(0); }
+
+              50% { transform: translateY(-8px); }
+
+          }
+
+
+
+          @keyframes fadeIn {
+
+              from { opacity: 0; transform: translateY(10px); }
+
+              to { opacity: 1; transform: translateY(0); }
+
+          }
+
+
+
+          .floating-asset.book { top: 10%; right: 5%; color: var(--accent-yellow); animation-delay: 0.2s; }
+
+          .floating-asset.pen { bottom: 20%; left: 5%; color: var(--accent-yellow); animation-delay: 1s; }
+
+
+
+          .motivation-text {
+
+              text-align: center;
+
+              font-style: italic;
+
+              color: #555;
+
+              margin: 15px 0 0 0;
+
+              font-size: 0.95rem;
+
+              font-weight: 700;
+
+          }
+
+
+
+          /* Footer */
+
+          .footer {
+
+              background: var(--glass-white);
+
+              backdrop-filter: blur(10px);
+
+              color: var(--dark-blue);
+
+              padding: 18px 5%;
+
+              text-align: center;
+
+              font-size: 0.95rem;
+
+              font-weight: 700;
+
+              position: relative;
+
+              z-index: 10;
+
+              border-top: 2px solid rgba(255, 255, 255, 0.5);
+
+              margin-top: 30px;
+
+          }
+
+
+
+          /* Overlay Transisi Halaman */
+
+          .transition-overlay {
+
+              position: fixed;
+
+              top: 0;
+
+              left: 0;
+
+              width: 100%;
+
+              height: 100%;
+
+              background-color: var(--dark-blue);
+
+              z-index: 9999;
+
+              opacity: 0;
+
+              pointer-events: none;
+
+              transition: opacity 0.6s ease;
+
+          }
+
+
+
+          .transition-overlay.active {
+
+              opacity: 1;
+
+          }
+
+
+
+          /* ================================
+           RESPONSIVE LAYOUT
+           PORTRAIT / HANDPHONE
+           ================================ */
+        @media (orientation: portrait) {
+            html, body {
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+
+            .main-content {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+                padding: 20px 5%;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .section-card {
+                width: 100%;
+                margin-bottom: 25px;
+            }
+
+            .footer-nav {
+                width: 100%;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .logo { font-size: 1.2rem; }
+            .section-card { padding: 20px; }
+            .section-card h2 { font-size: 1.5rem; }
+            .interactive-example p { font-size: 0.95rem; }
+            .floating-asset { font-size: 2rem; }
+            .sidebar { width: 250px; }
+        }
+
+        /* ================================
+           LANDSCAPE / LAPTOP
+           ================================ */
+        @media (orientation: landscape) and (min-width: 900px) {
+            html, body {
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+
+            .main-content {
+                width: 100%;
+                max-width: 1500px;
+                margin: 30px auto;
+                padding: 25px 4%;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                grid-template-areas:
+                    "intro intro"
+                    "idepokok idependukung"
+                    "ciripokok ciripendukung"
+                    "contohpokok contohpendukung"
+                    "latihan latihan"
+                    "footer footer";
+                gap: 30px;
+                align-items: start;
+            }
+
+            .section-card {
+                width: 100%;
+                margin-bottom: 0;
+            }
+
+            /* Baris 1 - TAHUKAH KAMU? */
+            #intro-card {
+                grid-area: intro;
+            }
+
+            /* Baris 2 - APA ITU IDE POKOK | APA ITU IDE PENDUKUNG */
+            #ide-pokok-section {
+                grid-area: idepokok;
+            }
+
+            #ide-pendukung-section {
+                grid-area: idependukung;
+            }
+
+            /* Baris 3 - CIRI-CIRI IDE POKOK | CIRI-CIRI IDE PENDUKUNG */
+            #ciri-ide-pokok-section {
+                grid-area: ciripokok;
+            }
+
+            #ciri-ide-pendukung-section {
+                grid-area: ciripendukung;
+            }
+
+            /* Baris 4 - CONTOH IDE POKOK | CONTOH IDE PENDUKUNG */
+            #contoh-ide-pokok-section {
+                grid-area: contohpokok;
+            }
+
+            #contoh-ide-pendukung-section {
+                grid-area: contohpendukung;
+            }
+
+            /* Baris 5 - YUK TEMUKAN IDE POKOK DAN IDE PENDUKUNG */
+            #latihan-singkat-section {
+                grid-area: latihan;
+            }
+
+            /* Tombol navigasi tetap di bagian paling bawah */
+            .main-content > .footer-nav {
+                grid-area: footer;
+            }
+
+            .footer-nav {
+                width: 100%;
+                margin: 10px auto 20px auto;
+                flex-direction: row;
+                gap: 20px;
+            }
+
+            .nav-btn {
+                min-width: 220px;
+            }
+        }
+
+        /* Layar sempit yang belum memenuhi mode laptop */
+        @media (max-width: 899px) {
+            .main-content {
+                width: 100%;
+                max-width: 900px;
+            }
+        }
+
+      </style>
+
+</head>
+
+<body>
+
+
+
+      <!-- Video Background & Layer Overlay Transparan -->
+
+      <div class="video-background">
+
+          <img src="bg.png" alt="" id="background-image">
+
+      </div>
+
+      <div class="video-overlay"></div>
+
+
+
+      <!-- Sidebar Navigasi -->
+
+      <nav class="sidebar" id="sidebar">
+
+          <ul class="sidebar-menu">
+
+              <li><a href="javascript:void(0)" onclick="navigateTo('index.html')">🏠 Beranda</a></li>
+
+              <li><a href="javascript:void(0)" onclick="navigateTo('petunjuk.html')">💡 Petunjuk</a></li>
+
+              <li><a href="javascript:void(0)" onclick="navigateTo('tujuan.html')">🎯 Tujuan</a></li>
+
+              <li><a href="javascript:void(0)" onclick="navigateTo('materi.html')" class="active">📚 Materi</a></li>
+
+              <li><a href="javascript:void(0)" onclick="navigateTo('lkpd.html')">📝 LKPD</a></li>
+
+              <li><a href="javascript:void(0)" onclick="navigateTo('refleksi.html')">🌟 Refleksi</a></li>
+
+              <li><a href="javascript:void(0)" onclick="navigateTo('profil.html')">Profil Pengembang</a></li>
+
+          </ul>
+
+      </nav>
+
+
+
+      <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+
+
+      <!-- Navbar Header / Taskbar -->
+
+      <header class="navbar-header">
+
+          <div class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</div>
+
+          <div class="logo"> Materi: Ide Pokok & Pendukung</div>
+
+          <div></div>
+
+      </header>
+
+
+
+      <span class="floating-asset book"></span>
+
+      <span class="floating-asset pen"></span>
+
+
+
+      <main class="main-content">
+
+          <!-- Card 1: Intro -->
+
+          <section class="section-card" id="intro-card">
+
+              <h2>Tahukah Kamu?</h2>
+
+              <p>Setiap bacaan tersusun atas beberapa paragraf. Di dalam setiap paragraf terdapat ide pokok yang menjadi inti pembahasan dan ide pendukung yang membantu menjelaskan ide pokok tersebut.</p>
+
+              <p> Dengan menemukan ide pokok dan ide pendukung, kamu akan lebih mudah memahami isi bacaan. Yuk, baca setiap paragraf dengan cermat dan temukan ide di dalamnya!</p>
+
+          </section>
+
+
+
+          <!-- Card 2: Pengertian Ide Pokok -->
+
+          <section class="section-card" id="ide-pokok-section" style="animation-delay: 0.2s;">
+
+              <h2>Apa Itu Ide Pokok?</h2>
+
+              <p>Ide pokok adalah gagasan atau pikiran utama yang menjadi dasar pembahasan dalam sebuah paragraf.</p>
+
+              <p>Sederhananya, ide pokok adalah hal yang paling penting yang sedang dibicarakan dalam sebuah paragraf.</p>
+
+          </section>
+
+
+
+          <!-- Card 3: Ciri-Ciri Ide Pokok -->
+
+          <section class="section-card" id="ciri-ide-pokok-section" style="animation-delay: 0.3s;">
+
+              <h2>Ciri-Ciri Ide Pokok</h2>
+
+              <ul class="feature-list">
+
+                  <li>
+
+                      <strong>Menjadi inti pembahasan paragraf</strong>
+
+                      <br>Ide pokok berisi hal utama yang sedang dibicarakan.
+
+                  </li>
+
+                  <li>
+
+                      <strong>Dapat ditemukan dalam satu kalimat</strong>
+
+                      <br>Biasanya ide pokok terdapat dalam salah satu kalimat pada paragraf.
+
+                  </li>
+
+                  <li>
+
+                      <strong>Dapat menjadi dasar untuk memahami paragraf</strong>
+
+                      <br>Jika kita mengetahui ide pokok, kita akan lebih mudah memahami isi paragraf.
+
+                  </li>
+
+                  <li>
+
+                      <strong>Dijelaskan oleh kalimat lain</strong>
+
+                      <br>Kalimat lain dalam paragraf biasanya memberikan penjelasan, contoh, atau informasi tambahan tentang ide pokok.
+
+                  </li>
+
+              </ul>
+
+          </section>
+
+
+
+          <!-- Card 4: Contoh Ide Pokok -->
+
+          <section class="section-card" id="contoh-ide-pokok-section" style="animation-delay: 0.4s;">
+
+              <h2>Contoh Ide Pokok</h2>
+
+
+
+              <div class="example-box">
+
+                  <p>Dito memiliki beberapa tanaman di halaman rumahnya. Setiap pagi, Dito menyiram tanaman tersebut. Ia juga membersihkan daun yang kering dan mencabut rumput liar. Dito merawat tanamannya agar tetap tumbuh subur.</p>
+
+              </div>
+
+
+
+              <div class="highlight-result">
+
+                  <p style="margin: 0;"><strong>Ide pokok:</strong> Dito merawat tanaman di halaman rumahnya.</p>
+
+              </div>
+
+
+
+              <div class="interactive-example">
+
+                  <p><strong>UJI PEMAHAMANMU TEMAN!</strong></p>
+
+                  <div id="paragraf-pokok">
+
+                      <p id="kalimat1" onclick="checkIdePokok(this, 1)">Rani gemar membaca buku setiap pagi.</p>&#x20;
+
+                      <p id="kalimat2" onclick="checkIdePokok(this, 2)">Ia merasa membaca membuat pikirannya segar dan semangat belajar meningkat.</p>
+
+                  </div>
+
+                  <div id="feedback-pokok" class="feedback"></div>
+
+                  <p class="motivation-text">💬 Diskusikan bersama temanmu, kalimat mana yang jadi ide pokoknya?</p>
+
+              </div>
+
+          </section>
+
+
+
+          <!-- Card 5: Pengertian Ide Pendukung -->
+
+          <section class="section-card pendukung-card" id="ide-pendukung-section" style="animation-delay: 0.5s;">
+
+              <h2>Apa Itu Ide Pendukung?</h2>
+
+              <p>Ide pendukung adalah informasi atau penjelasan yang membantu menjelaskan ide pokok dalam sebuah paragraf.</p>
+
+              <p>Sederhananya, ide pendukung adalah hal-hal yang menjelaskan ide pokok agar paragraf menjadi lebih jelas dan lengkap.</p>
+
+          </section>
+
+
+
+          <!-- Card 6: Ciri-Ciri Ide Pendukung -->
+
+          <section class="section-card pendukung-card" id="ciri-ide-pendukung-section" style="animation-delay: 0.6s;">
+
+              <h2>Ciri-Ciri Ide Pendukung</h2>
+
+              <ul class="feature-list pendukung-list">
+
+                  <li>
+
+                      <strong>Menjelaskan ide pokok</strong>
+
+                      <br>Ide pendukung memberikan penjelasan tentang hal utama yang dibahas.
+
+                  </li>
+
+                  <li>
+
+                      <strong>Berisi informasi tambahan</strong>
+
+                      <br>Informasi tersebut dapat berupa contoh, alasan, fakta, atau penjelasan.
+
+                  </li>
+
+                  <li>
+
+                      <strong>Mendukung isi paragraf</strong>
+
+                      <br>Tanpa ide pendukung, penjelasan dalam paragraf bisa menjadi kurang lengkap.
+
+                  </li>
+
+                  <li>
+
+                      <strong>Jumlahnya dapat lebih dari satu</strong>
+
+                      <br>Dalam satu paragraf, biasanya terdapat beberapa ide pendukung.
+
+                  </li>
+
+                  <li>
+
+                      <strong>Berkaitan dengan ide pokok</strong>
+
+                      <br>Ide pendukung harus tetap berhubungan dengan hal utama yang dibahas.
+
+                  </li>
+
+              </ul>
+
+          </section>
+
+
+
+          <!-- Card 7: Contoh Ide Pendukung & Interactive Test -->
+
+          <section class="section-card pendukung-card" id="contoh-ide-pendukung-section" style="animation-delay: 0.7s;">
+
+              <h2>Contoh Ide Pendukung</h2>
+
+
+
+              <div class="example-box">
+
+                  <p>Siswa kelas 4 menjaga kebersihan kelas. Mereka melaksanakan piket sesuai jadwal. Setiap pagi, siswa menyapu lantai dan membersihkan papan tulis. Mereka juga membuang sampah pada tempatnya. Kelas yang bersih membuat kegiatan belajar menjadi lebih nyaman.</p>
+
+              </div>
+
+
+
+              <div class="highlight-result">
+
+                  <p style="margin: 0;"><strong>Ide pendukung:</strong></p>
+
+                  <ul>
+
+                      <li>Siswa melaksanakan piket sesuai jadwal.</li>
+
+                      <li>Siswa menyapu lantai dan membersihkan papan tulis.</li>
+
+                      <li>Siswa membuang sampah pada tempatnya.</li>
+
+                      <li>Kelas yang bersih membuat kegiatan belajar menjadi lebih nyaman.</li>
+
+                  </ul>
+
+              </div>
+
+
+
+              <div class="interactive-example">
+
+                  <p><strong>UJI PEMAHAMANMU TEMAN!</strong></p>
+
+                  <div id="paragraf-pendukung">
+
+                      <p id="k-pokok" onclick="checkIdePendukung(this, 1)">Rani gemar membaca buku setiap pagi.</p>&#x20;
+
+                      <p id="k-pendukung" onclick="checkIdePendukung(this, 2)">Ia merasa membaca membuat pikirannya segar dan semangat belajar meningkat.</p>
+
+                  </div>
+
+                  <div id="feedback-pendukung" class="feedback"></div>
+
+                  <p class="motivation-text">💬 Ajak gurumu membacakan paragraf ini bersama-sama, ya!</p>
+
+              </div>
+
+          </section>
+
+
+
+          <!-- Card 8: Quiz / Latihan -->
+
+          <section class="section-card" id="latihan-singkat-section" style="animation-delay: 0.8s;">
+
+              <h2>Yuk, Temukan Ide Pokok dan Ide Pendukung!</h2>
+
+              <form id="latihanForm">
+
+                  <div class="quiz-item">
+
+                      <strong>Paragraf 1:</strong>
+
+                      <p>Pohon kelapa dikenal sebagai pohon serbaguna. Hampir semua bagian pohon kelapa bisa dimanfaatkan oleh manusia. Batangnya bisa dijadikan bahan bangunan, dan daunnya bisa dibuat kerajinan tangan. Dari teks tersebut kalimat apa yang menunjukan ide pokok?</p>
+
+                      <div class="option-group">
+
+                          <label for="q1a" onclick="playClickSound()">
+
+                              <input type="radio" id="q1a" name="q1" value="A">
+
+                              <span>A. Batangnya bisa dijadikan bahan bangunan.</span>
+
+                          </label>
+
+                          <label for="q1b" onclick="playClickSound()">
+
+                              <input type="radio" id="q1b" name="q1" value="B">
+
+                              <span>B. Pohon kelapa dikenal sebagai pohon serbaguna.</span>
+
+                          </label>
+
+                          <label for="q1c" onclick="playClickSound()">
+
+                              <input type="radio" id="q1c" name="q1" value="C">
+
+                              <span>C. Daunnya bisa dibuat kerajinan tangan.</span>
+
+                          </label>
+
+                      </div>
+
+                  </div>
+
+
+
+                  <div class="quiz-item">
+
+                      <strong>Paragraf 2:</strong>
+
+                      <p>Kucing adalah hewan peliharaan yang lucu. Bulunya yang halus dan tingkahnya yang manja membuat banyak orang menyukai mereka. Kucing juga sering dijadikan teman bermain anak-anak. Dari teks tersebut kalimat apa yang menunjukan ide pendukung?</p>
+
+                      <div class="option-group">
+
+                          <label for="q2a" onclick="playClickSound()">
+
+                              <input type="radio" id="q2a" name="q2" value="A">
+
+                              <span>A. Kucing juga sering dijadikan teman bermain anak-anak.</span>
+
+                          </label>
+
+                          <label for="q2b" onclick="playClickSound()">
+
+                              <input type="radio" id="q2b" name="q2" value="B">
+
+                              <span>B. Kucing adalah hewan peliharaan yang lucu.</span>
+
+                          </label>
+
+                          <label for="q2c" onclick="playClickSound()">
+
+                              <input type="radio" id="q2c" name="q2" value="C">
+
+                              <span>C. Bulunya yang halus dan tingkahnya yang manja.</span>
+
+                          </label>
+
+                      </div>
+
+                  </div>
+
+
+
+                  <button type="button" class="nav-btn next" onclick="checkLatihan()" style="width: 100%; margin-top: 15px;">Lihat Hasil</button>
+
+              </form>
+
+              <div id="result-feedback"></div>
+
+          </section>
+
+
+
+          <footer class="footer-nav">
+
+              <a href="javascript:void(0)" onclick="navigateTo('tujuan.html')" class="nav-btn back">Kembali</a>
+
+              <a href="javascript:void(0)" onclick="navigateTo('lkpd.html')" class="nav-btn next">Lanjut</a>
+
+          </footer>
+
+      </main>
+
+
+
+      <!-- Footer -->
+
+      <footer class="footer">
+
+          &copy; 2026 Teman Belajarku | Website Pembelajaran Bahasa Indonesia SD
+
+      </footer>
+
+
+
+      <!-- Overlay Transisi Keluar Halaman -->
+
+      <div class="transition-overlay" id="pageOverlay"></div>
+
+
+
+      <!-- JavaScript Integrasi Audio API & Jawaban Quiz (P1=B, P2=C) -->
+
+      <script>
+
+          const sidebar = document.getElementById('sidebar');
+
+          const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+
+
+          // Fungsi Audio Synthesizer
+
+          function playClickSound() {
+
+              try {
+
+                  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+                  const oscillator = audioCtx.createOscillator();
+
+                  const gainNode = audioCtx.createGain();
+
+
+
+                  oscillator.type = 'sine';
+
+                  oscillator.frequency.setValueAtTime(500, audioCtx.currentTime);
+
+                  oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+
+
+
+                  gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+
+                  gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+
+
+
+                  oscillator.connect(gainNode);
+
+                  gainNode.connect(audioCtx.destination);
+
+
+
+                  oscillator.start();
+
+                  oscillator.stop(audioCtx.currentTime + 0.2);
+
+              } catch (e) {
+
+                  console.log("Audio Context requires user interaction");
+
+              }
+
+          }
+
+
+
+          // Toggle Navigasi Sidebar
+
+          function toggleSidebar() {
+
+              playClickSound();
+
+              const isOpen = sidebar.classList.contains('open');
+
+              if (isOpen) {
+
+                  sidebar.classList.remove('open');
+
+                  sidebarOverlay.classList.remove('active');
+
+              } else {
+
+                  sidebar.classList.add('open');
+
+                  sidebarOverlay.classList.add('active');
+
+              }
+
+          }
+
+
+
+          // Navigasi Pindah Halaman
+
+          function navigateTo(targetUrl) {
+
+              playClickSound();
+
+              const pageOverlay = document.getElementById('pageOverlay');
+
+              if (pageOverlay) {
+
+                  pageOverlay.classList.add('active');
+
+              }
+
+
+
+              setTimeout(() => {
+
+                  window.location.href = targetUrl;
+
+              }, 600);
+
+          }
+
+
+
+          // Interaktif Contoh Ide Pokok
+
+          function checkIdePokok(element, index) {
+
+              playClickSound();
+
+              const feedbackDiv = document.getElementById('feedback-pokok');
+
+              document.getElementById('kalimat1').style.borderColor = '#ddd';
+
+              document.getElementById('kalimat2').style.borderColor = '#ddd';
+
+
+
+              element.style.borderColor = 'var(--primary-blue)';
+
+              feedbackDiv.style.display = 'block';
+
+
+
+              if (index === 1) {
+
+                  feedbackDiv.className = 'feedback correct';
+
+                  feedbackDiv.innerHTML = '✨ <strong>Benar!</strong> Ide pokoknya adalah: Rani gemar membaca buku setiap pagi.';
+
+              } else {
+
+                  feedbackDiv.className = 'feedback incorrect';
+
+                  feedbackDiv.innerHTML = 'Coba lagi, ya! Ide Pokok adalah kalimat yang menjadi inti dari pembahasan.';
+
+              }
+
+          }
+
+
+
+          // Interaktif Contoh Ide Pendukung
+
+          function checkIdePendukung(element, index) {
+
+              playClickSound();
+
+              const feedbackDiv = document.getElementById('feedback-pendukung');
+
+              document.getElementById('k-pokok').style.borderColor = '#ddd';
+
+              document.getElementById('k-pendukung').style.borderColor = '#ddd';
+
+
+
+              element.style.borderColor = 'var(--oranye-lembut)';
+
+              feedbackDiv.style.display = 'block';
+
+
+
+              if (index === 2) {
+
+                  feedbackDiv.className = 'feedback correct';
+
+                  feedbackDiv.innerHTML = '🌟 <strong>Hebat!</strong> Kamu sudah menemukan ide pendukung! Kalimat ini menjelaskan mengapa Rani suka membaca.';
+
+              } else {
+
+                  feedbackDiv.className = 'feedback incorrect';
+
+                  feedbackDiv.innerHTML = 'Coba lagi! Ide Pendukung adalah kalimat yang menjelaskan atau memperkuat Ide Pokok.';
+
+              }
+
+          }
+
+
+
+          // Evaluasi Quiz
+
+          function checkLatihan() {
+
+              playClickSound();
+
+              const q1Answer = document.querySelector('input[name="q1"]:checked')?.value;
+
+              const q2Answer = document.querySelector('input[name="q2"]:checked')?.value;
+
+              const resultDiv = document.getElementById('result-feedback');
+
+
+
+              let correctCount = 0;
+
+              if (q1Answer === 'B') { correctCount++; }
+
+              if (q2Answer === 'C') { correctCount++; }
+
+
+
+              resultDiv.style.display = 'block';
+
+
+
+              if (correctCount === 2) {
+
+                  resultDiv.className = 'feedback correct';
+
+                  resultDiv.innerHTML = '🎉 <strong>Hebat!</strong> Kamu sudah paham Ide Pokok dan Ide Pendukung!';
+
+              } else if (correctCount === 1) {
+
+                   resultDiv.className = 'feedback incorrect';
+
+                   resultDiv.innerHTML = '👍 <strong>Bagus!</strong> Kamu benar 1 dari 2. Yuk, baca lagi paragrafnya dengan cermat untuk yang satunya!';
+
+              } else {
+
+                  resultDiv.className = 'feedback incorrect';
+
+                  resultDiv.innerHTML = ' <strong>Coba lagi!</strong> Kamu perlu membaca lagi paragrafnya dengan lebih fokus untuk menemukan ide pokoknya.';
+
+              }
+
+              resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+          }
+
+      </script>
+
+</body>
+
+</html>

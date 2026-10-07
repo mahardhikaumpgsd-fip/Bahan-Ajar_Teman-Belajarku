@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD – Teman Belajarku</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variabel Warna & Tema */
+        :root {
+            --primary-blue: #1e90ff;
+            --dark-blue: #0b3d91;
+            --accent-yellow: #ffd700;
+            --button-shadow: #b8860b;
+            --white: #ffffff;
+            --glass-white: rgba(255, 255, 255, 0.85);
+            --bayangan-biru: rgba(30, 144, 255, 0.4);
+            --radius-xl: 1.5rem;
+            --radius-lg: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--dark-blue);
+            color: #333;
+            min-height: 100vh;
+            font-size: 16px;
+            position: relative;
+            overflow-x: hidden;
+            opacity: 0;
+            animation: pageFadeIn 1s forwards;
+        }
+
+        @keyframes pageFadeIn {
+            to { opacity: 1; }
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* Image Background Setup */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            background-image: url('bg1.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .video-background video {
+            display: none;
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 144, 255, 0.2), rgba(11, 61, 145, 0.85));
+            z-index: -1;
+        }
+
+        /* Navbar Header */
+        .navbar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%; 
+            background: var(--glass-white); 
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .logo {
+            font-family: 'Fredoka One', cursive; 
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+            text-shadow: 0 2px 0 var(--accent-yellow); 
+            letter-spacing: 1px;
+            margin-right: auto; 
+            margin-left: 20px;
+        }
+
+        .menu-toggle {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--dark-blue);
+            transition: transform 0.2s;
+            background: var(--white);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            order: -1;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Sidebar Navigasi */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            z-index: 998;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px; 
+            height: 100%;
+            background: var(--glass-white);
+            backdrop-filter: blur(15px);
+            color: var(--dark-blue);
+            padding-top: 65px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); 
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .sidebar-menu li a {
+            display: block;
+            font-size: 1.1rem; 
+            padding: 15px 30px; 
+            color: var(--dark-blue);
+            font-weight: 700;
+            transition: background-color 0.3s, transform 0.2s;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-menu li a:hover,
+        .sidebar-menu li a.active {
+            background-color: rgba(30, 144, 255, 0.15);
+            color: var(--primary-blue);
+            transform: translateX(8px);
+        }
+
+        /* Main Layout Grid */
+        main {
+            max-width: 1400px;
+            margin: 25px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 25px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.25);
+            border: 1px solid #eee;
+        }
+
+        .card h2, .card h3 {
+            font-family: 'Fredoka One', cursive;
+        }
+
+        #spin-and-question-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px; 
+        }
+
+        @media (min-width: 1025px) {
+            main {
+                grid-template-areas:
+                    "spin-and-question instructions"
+                    "spin-and-question leaderboard"
+                    "controls controls";
+                grid-template-columns: 1.2fr 1fr; 
+                align-items: start;
+            }
+            
+            #spin-and-question-container { grid-area: spin-and-question; }
+            #instructions { grid-area: instructions; }
+            #leaderboard { grid-area: leaderboard; }
+            #controls { grid-area: controls; }
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        /* Tombol 3D */
+        .btn {
+            position: relative;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.1rem;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn-primary { 
+            background-color: var(--accent-yellow); 
+            color: var(--dark-blue); 
+            box-shadow: 0 6px 0 var(--button-shadow);
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4), 0 6px 0 var(--button-shadow);
+        }
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 var(--button-shadow);
+        }
+
+        .btn-toska { 
+            background-color: var(--primary-blue); 
+            color: var(--white); 
+            box-shadow: 0 6px 0 var(--dark-blue);
+        }
+        .btn-toska:hover:not(:disabled) {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 10px 20px var(--bayangan-biru), 0 6px 0 var(--dark-blue);
+        }
+        .btn-toska:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 var(--dark-blue);
+        }
+
+        .btn-purple { 
+            background-color: #8B5CF6; 
+            color: var(--white); 
+            box-shadow: 0 6px 0 #5B21B6;
+        }
+        .btn-purple:hover:not(:disabled) {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.4), 0 6px 0 #5B21B6;
+        }
+        .btn-purple:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #5B21B6;
+        }
+
+        .btn-reset { 
+            background-color: #EF4444; 
+            color: var(--white); 
+            box-shadow: 0 6px 0 #991B1B;
+        }
+        .btn-reset:hover:not(:disabled) {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.4), 0 6px 0 #991B1B;
+        }
+        .btn-reset:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #991B1B;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .input-text {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 0.75rem;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1em;
+            font-weight: 700;
+            background-color: #f9f9f9;
+        }
+
+        .input-text:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px var(--bayangan-biru); 
+            outline: none;
+            background-color: var(--white);
+        }
+
+        #spin {
+            text-align: center; 
+            background-color: rgba(224, 247, 250, 0.7); 
+            border: 3px solid var(--primary-blue);
+        }
+
+        #spinResultDisplay {
+            width: 120px; 
+            height: 120px; 
+            border-radius: 50%;
+            background: #fff;
+            border: 4px dashed var(--accent-yellow);
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin: 15px auto;
+            font-family: 'Fredoka One', cursive;
+            font-size: 3em; 
+            color: var(--dark-blue);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Modal Dadu */
+        .dice-modal {
+            position: fixed; 
+            z-index: 2000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); 
+            backdrop-filter: blur(5px);
+            display: none; 
+            justify-content: center; 
+            align-items: center;
+            opacity: 0; 
+            transition: opacity 0.5s ease;
+        }
+
+        .dice-modal.active { opacity: 1; display: flex; }
+
+        .dice-content { text-align: center; color: var(--white); padding: 20px; }
+
+        .dice-content h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5em; 
+            color: var(--accent-yellow); 
+            margin-bottom: 50px;
+        }
+
+        #diceCubeContainer {
+            width: 200px; 
+            height: 200px;
+            perspective: 800px;
+            margin: 0 auto;
+        }
+
+        .cube {
+            width: 100%; 
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 3.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .face {
+            position: absolute;
+            width: 200px; 
+            height: 200px;
+            border: 8px solid var(--white);
+            background-color: var(--primary-blue);
+            opacity: 0.95;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-family: 'Fredoka One', cursive;
+            font-size: 4em; 
+            color: var(--white);
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-lg);
+        }
+
+        .front  { transform: rotateY( 0deg) translateZ(100px); }
+        .back   { transform: rotateX(180deg) translateZ(100px); }
+        .right  { transform: rotateY( 90deg) translateZ(100px); }
+        .left   { transform: rotateY(-90deg) translateZ(100px); }
+        .top    { transform: rotateX( 90deg) translateZ(100px); }
+        .bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+        @keyframes diceRoll {
+            0%   { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(1800deg) rotateY(2520deg) rotateZ(1440deg); }
+        }
+
+        .spinning {
+            animation: diceRoll 3.5s forwards cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        #questionText { 
+            font-size: 1.1em; 
+            font-weight: 700;
+            border-left: 6px solid var(--accent-yellow); 
+            padding: 12px 15px; 
+            background-color: #fffaf0;
+            border-radius: 8px;
+            text-align: justify;
+            line-height: 1.6;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th {
+            font-family: 'Fredoka One', cursive;
+            background-color: rgba(30, 144, 255, 0.1);
+            color: var(--dark-blue);
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            font-weight: 700;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal {
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%;
+            background-color: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(4px);
+            display: none; 
+            justify-content: center; 
+            align-items: center;
+            opacity: 0; 
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .modal-content {
+            background-color: var(--white); 
+            padding: 30px; 
+            border-radius: var(--radius-xl); 
+            width: 90%; 
+            max-width: 700px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+            transform: scale(0.9); 
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .modal.active { opacity: 1; }
+        .modal.active .modal-content { transform: scale(1); }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.2s; }
+        .close:hover { color: var(--dark-blue); }
+        
+        .rank-1 { background-color: rgba(255, 215, 0, 0.4) !important; color: var(--dark-blue); }
+        .rank-2 { background-color: #fce8a6 !important; }
+        .rank-3 { background-color: #fcf1d4 !important; }
+
+        .instructions-list {
+            padding-left: 20px;
+            margin: 10px 0 0 0;
+        }
+
+        .instructions-list li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            font-weight: 700;
+            color: #444;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            color: var(--dark-blue);
+            padding: 18px 5%;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 10;
+            border-top: 2px solid rgba(255, 255, 255, 0.5);
+            margin-top: 40px;
+        }
+
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-blue);
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        .transition-overlay.active { opacity: 1; }
+
+        .turn-display {
+            background: #e0f2fe;
+            border: 2px solid #0284c7;
+            color: #0369a1;
+            padding: 12px;
+            border-radius: 12px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.15em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Image Background -->
+    <div class="video-background" aria-hidden="true"></div>
+    <div class="video-overlay"></div>
+
+    <!-- Sidebar Navigasi -->
+    <nav class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="javascript:void(0)" onclick="navigateTo('index.html')">🏠 Beranda</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('petunjuk.html')">💡 Petunjuk</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('tujuan.html')">🎯 Tujuan</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('materi.html')">📚 Materi</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('lkpd.html')" class="active">📝 LKPD</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('refleksi.html')">🌟 Refleksi</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('profil.html')">Profil Pengembang</a></li>
+        </ul>
+    </nav>
+    
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Navbar Header -->
+    <header class="navbar-header">
+        <div class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</div>
+        <div class="logo">LKPD INTERAKTIF</div>
+        <div></div>
+    </header>
+
+    <main>
+        <!-- Area Putar Spin & Soal Aktif -->
+        <div id="spin-and-question-container">
+            <div id="turnBox" class="turn-display">
+                GILIRAN: Belum Ada Kelompok
+            </div>
+
+            <div id="spin" class="card">
+                <h3 style="color: var(--dark-blue); margin-top: 0;">Soal yang Dipilih</h3>
+                <div id="spinResultDisplay">
+                    <span style="font-size: 2em;">🎲</span>
+                </div>
+                <button class="btn btn-toska" id="spinBtn" onclick="spinRandomQuestion()" aria-label="Spin Soal">
+                    SPIN SOAL
+                </button>
+                <div id="selectedStudent" style="margin-top: 15px; font-weight: 800; font-size: 1.1em;">
+                    Nomor Soal: <span id="studentNumber" style="color: #FF6B6B;">---</span>
+                </div>
+            </div>
+
+            <div id="current-question" class="card">
+                <h2 style="color: var(--dark-blue);" id="questionHeaderTitle">SOAL</h2>
+                <div id="questionCard">
+                    <p id="questionText">[Tekan SPIN SOAL untuk memutar dadu dan menampilkan soal]</p>
+                    
+                    <div id="questionFormArea" style="display: none;">
+                        <table style="width: 100%; margin-top: 15px; border-collapse: separate; border-spacing: 0 10px;">
+                            <tr>
+                                <td style="width: 30%; font-weight: 700; vertical-align: top; padding-top: 10px;">1. Ide Pokok:</td>
+                                <td style="width: 70%;">
+                                    <input type="text" id="mainIdea" class="input-text" placeholder="Tulis ide pokok di sini" maxlength="250">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%; font-weight: 700; vertical-align: top; padding-top: 10px;">2. Ide Pendukung:</td>
+                                <td style="width: 70%;">
+                                    <input type="text" id="supportIdea" class="input-text" placeholder="Tulis ide pendukung di sini" maxlength="250">
+                                </td>
+                            </tr>
+                        </table>
+                        <button class="btn btn-primary" id="submitAnswer" style="margin-top: 25px;" onclick="submitAnswer()">
+                            Kirim Jawaban
+                        </button>
+                    </div>
+                </div>
+                <div id="finishMessage" style="display: none; text-align: center; margin-top: 20px;">
+                    <h3 style="color: var(--primary-blue);">SEMUA 30 SOAL TELAH DIGUNAKAN!</h3>
+                    <p style="font-weight: 700; margin-bottom: 15px;">Seluruh permainan telah selesai. Silakan periksa Papan Peringkat Akhir.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Petunjuk LKPD -->
+        <section id="instructions" class="card">
+            <h2 style="color: var(--dark-blue); margin-top: 0;"><span style="font-size: 1.2em;"></span> PETUNJUK LKPD</h2>
+            <ul class="instructions-list">
+                <li>Bentuklah kelompok dengan anggota minimal 2 orang.</li>
+                <li>Klik tombol <strong>TAMBAH KELOMPOK</strong> dan isi nama kelompok untuk mendaftar pada papan peringkat.</li>
+                <li>Klik tombol <strong>SPIN SOAL</strong> (gambar dadu) untuk mendapatkan soal secara acak.</li>
+                <li>Setiap soal terdiri dari 2 pertanyaan, yaitu 1 pertanyaan <strong>Ide Pokok</strong> dan 1 pertanyaan <strong>Ide Pendukung</strong>.</li>
+                <li>Sistem Penilaian:
+                    <ul style="margin-top: 5px; padding-left: 20px;">
+                        <li>Menjawab 2 pertanyaan dengan benar = <strong>20 Poin</strong></li>
+                        <li>Menjawab 1 pertanyaan dengan benar = <strong>10 Poin</strong></li>
+                        <li>Tidak ada jawaban yang benar = <strong>0 Poin</strong></li>
+                    </ul>
+                </li>
+                <li>Urutan menjawab pertanyaan wajib dilakukan secara bergantian sesuai urutan kelompok.</li>
+            </ul>
+        </section>
+
+        <!-- Papan Peringkat -->
+        <section id="leaderboard" class="card">
+            <h2 style="color: var(--dark-blue); margin-top: 0;">PAPAN PERINGKAT</h2>
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Peringkat</th>
+                            <th style="width: 25%;">Kelompok</th>
+                            <th style="width: 35%;">Nama Kelompok</th>
+                            <th style="width: 20%;">Skor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Tombol Kontrol Utama -->
+        <section id="controls" class="card">
+            <h3 style="color: var(--dark-blue); margin-top: 0; margin-bottom: 15px;">Kontrol LKPD</h3>
+            <div class="controls-grid">
+                <button class="btn btn-primary" id="btnAddGroup" onclick="showAddGroupModal()">
+                    TAMBAH KELOMPOK
+                </button>
+                <button class="btn btn-toska" id="btnExportPDF" onclick="exportPDF()">
+                    EXPORT PDF
+                </button>
+                <button class="btn btn-purple" id="btnRefleksi" onclick="navigateTo('refleksi.html')">
+                    REFLEKSI
+                </button>
+                <button class="btn btn-reset" id="btnReset" onclick="confirmReset()">
+                    RESET LKPD
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Dadu Berputar -->
+    <div id="diceOverlay" class="dice-modal" role="dialog" aria-modal="true">
+        <div class="dice-content">
+            <h2 id="diceTitle">Memutar Dadu Soal... 🎲</h2>
+            <div id="diceCubeContainer">
+                <div class="cube" id="diceCube">
+                    <div class="face front">1</div>
+                    <div class="face back">6</div>
+                    <div class="face right">3</div>
+                    <div class="face left">4</div>
+                    <div class="face top">5</div>
+                    <div class="face bottom">2</div>
+                </div>
+            </div>
+            <div id="finalResultDisplay" style="font-family: 'Fredoka One', cursive; font-size: 5em; color: var(--accent-yellow); margin-top: 30px; display: none;"></div>
+            <button class="btn btn-toska" id="continueBtn" onclick="closeDiceModal()" style="display: none; width: 300px; margin: 20px auto 0 auto;">
+                Buka Soal
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Kelompok -->
+    <div id="addGroupModal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addGroupModal')">&times;</span>
+            <h2 style="color: var(--dark-blue); margin-bottom: 15px;">➕ Tambah Kelompok Baru</h2>
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: 700; display: block; margin-bottom: 5px;">Kelompok ke:</label>
+                <input type="number" id="groupNumberInput" class="input-text" placeholder="Contoh: 1" min="1">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight: 700; display: block; margin-bottom: 5px;">Nama Kelompok:</label>
+                <input type="text" id="groupNameInput" class="input-text" placeholder="Contoh: Kelompok Garuda">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-primary" onclick="saveGroup()">Simpan Kelompok</button>
+                <button class="btn btn-reset" onclick="closeModal('addGroupModal')">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2026 Teman Belajarku | Website Pembelajaran Bahasa Indonesia SD
+    </footer>
+
+    <!-- Overlay Transisi Halaman -->
+    <div class="transition-overlay" id="pageOverlay"></div>
+
+    <script>
+        const LS_KEY = 'lkpd_30_soal_group_state';
+        const TOTAL_QUESTIONS = 30;
+        
+        let state = {
+            groups: [],
+            currentGroupIndex: 0,
+            usedQuestions: [],
+            currentActiveQuestion: null,
+            answers: {}
+        };
+
+        const QUESTIONS = [
+            {
+                id: 1,
+                title: "Soal 1 — Kebersihan Sekolah",
+                text: "Setiap hari Jumat, siswa kelas 4 SD Harapan melakukan kegiatan membersihkan lingkungan sekolah. Sebelum kegiatan dimulai, guru membagi siswa menjadi beberapa kelompok. Ada kelompok yang bertugas menyapu halaman, membersihkan ruang kelas, mengumpulkan sampah, dan merapikan taman sekolah. Para siswa bekerja dengan semangat dan saling membantu ketika ada pekerjaan yang belum selesai. Setelah kegiatan selesai, lingkungan sekolah terlihat lebih bersih, rapi, dan nyaman untuk digunakan belajar.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Siswa kelas 4 melakukan kegiatan membersihkan lingkungan sekolah.",
+                keySupport: "Siswa dibagi menjadi beberapa kelompok, menyapu halaman, membersihkan kelas, mengumpulkan sampah, dan merapikan taman."
+            },
+            {
+                id: 2,
+                title: "Soal 2 — Merawat Tanaman di Rumah",
+                text: "Rani memiliki beberapa tanaman di halaman rumahnya. Ia sangat senang merawat tanaman tersebut karena halaman rumah menjadi lebih hijau dan indah. Setiap pagi sebelum berangkat sekolah, Rani menyiram tanaman menggunakan air secukupnya. Pada sore hari, ia membersihkan daun yang kering dan mencabut rumput liar yang tumbuh di sekitar tanaman. Sesekali, Rani juga memberikan pupuk agar tanaman dapat tumbuh dengan subur. Berkat perawatan yang dilakukan secara rutin, tanaman di halaman rumah Rani tumbuh dengan baik.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Rani rajin merawat tanaman di halaman rumahnya.",
+                keySupport: "Rani menyiram tanaman, membersihkan daun kering, mencabut rumput liar, dan memberikan pupuk."
+            },
+            {
+                id: 3,
+                title: "Soal 3 — Membaca di Perpustakaan",
+                text: "Dimas merupakan salah satu siswa yang sering mengunjungi perpustakaan sekolah. Ia biasanya datang ke perpustakaan saat jam istirahat atau ketika mendapat tugas dari guru. Di perpustakaan, Dimas membaca berbagai macam buku, seperti buku cerita, buku pengetahuan, dan ensiklopedia anak. Jika menemukan informasi yang menarik, ia mencatatnya di buku catatan. Dimas merasa senang membaca karena ia dapat memperoleh banyak pengetahuan baru. Kebiasaan membaca tersebut membuat Dimas semakin tertarik untuk mempelajari berbagai hal.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Dimas senang membaca buku di perpustakaan sekolah.",
+                keySupport: "Dimas membaca berbagai jenis buku, mencatat informasi menarik, dan mendapatkan banyak pengetahuan baru."
+            },
+            {
+                id: 4,
+                title: "Soal 4 — Kerja Bakti di Lingkungan Rumah",
+                text: "Pada hari Minggu pagi, warga di lingkungan tempat tinggal Siti mengadakan kerja bakti. Kegiatan tersebut dilakukan untuk menjaga kebersihan lingkungan dan membuat suasana tempat tinggal menjadi lebih nyaman. Sebagian warga membersihkan selokan yang mulai dipenuhi daun kering dan sampah. Warga lainnya menyapu jalan, mengumpulkan sampah, serta merapikan tanaman yang tumbuh di pinggir jalan. Anak-anak juga ikut membantu dengan mengumpulkan sampah yang berserakan. Setelah kerja bakti selesai, lingkungan terlihat lebih bersih dan rapi.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Warga melakukan kerja bakti untuk menjaga kebersihan lingkungan.",
+                keySupport: "Warga membersihkan selokan, menyapu jalan, mengumpulkan sampah, merapikan tanaman, dan anak-anak ikut membantu."
+            },
+            {
+                id: 5,
+                title: "Soal 5 — Pentingnya Sarapan",
+                text: "Setiap pagi, Beni selalu menyempatkan diri untuk sarapan sebelum pergi ke sekolah. Ia biasanya makan nasi bersama telur atau ikan, kemudian dilengkapi dengan sayur dan buah. Ibu Beni selalu mengingatkan agar ia tidak melewatkan sarapan karena tubuh membutuhkan energi untuk melakukan berbagai kegiatan. Setelah sarapan, Beni merasa lebih bersemangat mengikuti pelajaran di kelas. Ia juga tidak mudah merasa lapar ketika belajar. Karena itu, Beni selalu berusaha membiasakan diri sarapan sebelum berangkat sekolah.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Beni selalu sarapan sebelum berangkat sekolah.",
+                keySupport: "Beni makan makanan bergizi, sarapan memberikan energi, membuatnya lebih bersemangat belajar, dan tidak mudah lapar."
+            },
+            {
+                id: 6,
+                title: "Soal 6 — Bermain Sepak Bola",
+                text: "Setiap sore, Andi dan teman-temannya berkumpul di lapangan dekat rumah untuk bermain sepak bola. Sebelum bermain, mereka terlebih dahulu membagi diri menjadi dua kelompok dengan jumlah pemain yang hampir sama. Setelah itu, mereka menentukan aturan permainan agar semua pemain dapat bermain dengan tertib. Saat permainan berlangsung, setiap anggota kelompok berusaha bekerja sama dengan memberikan umpan kepada teman dan menjaga daerah pertahanan. Meskipun ingin memenangkan permainan, mereka tetap bermain dengan sportif dan tidak saling mengejek. Setelah permainan selesai, mereka membersihkan lapangan sebelum pulang ke rumah.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Andi dan teman-temannya bermain sepak bola dengan tertib dan bekerja sama.",
+                keySupport: "Mereka membagi kelompok, menentukan aturan permainan, bekerja sama saat bermain, menjaga sportivitas, dan membersihkan lapangan setelah bermain."
+            },
+            {
+                id: 7,
+                title: "Soal 7 — Menolong Teman",
+                text: "Saat pelajaran Bahasa Indonesia berlangsung, Lala sedang mengerjakan tugas yang diberikan oleh gurunya. Tiba-tiba pensil yang digunakan Lala patah. Ia mencoba meraut pensil tersebut, tetapi ternyata pensilnya sudah terlalu pendek untuk digunakan. Lala kemudian mencari pensil cadangan di dalam tas, tetapi ia tidak membawanya. Melihat Lala kebingungan, Nisa segera menawarkan salah satu pensil miliknya. Lala menerima bantuan tersebut dan mengucapkan terima kasih kepada Nisa. Dengan bantuan Nisa, Lala dapat menyelesaikan tugasnya tepat waktu.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Nisa membantu Lala yang kesulitan mengerjakan tugas.",
+                keySupport: "Pensil Lala patah, Lala tidak memiliki pensil cadangan, Nisa meminjamkan pensil, dan Lala dapat menyelesaikan tugasnya."
+            },
+            {
+                id: 8,
+                title: "Soal 8 — Menghemat Air",
+                text: "Keluarga Fajar memiliki kebiasaan menghemat air dalam kehidupan sehari-hari. Mereka selalu menggunakan air sesuai kebutuhan dan tidak membiarkan keran terbuka setelah selesai digunakan. Ketika mandi, Fajar menggunakan air secukupnya dan memastikan keran tertutup dengan rapat. Ibu Fajar juga menggunakan air bekas mencuci sayuran untuk menyiram tanaman di halaman. Ayah mengingatkan semua anggota keluarga bahwa air merupakan sumber daya yang penting dan harus digunakan dengan bijak. Dengan kebiasaan tersebut, keluarga Fajar dapat mengurangi pemborosan air.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Keluarga Fajar membiasakan diri menghemat air.",
+                keySupport: "Menggunakan air secukupnya, menutup keran, menggunakan air bekas mencuci sayuran untuk menyiram tanaman, dan menggunakan air dengan bijak."
+            },
+            {
+                id: 9,
+                title: "Soal 9 — Manfaat Perpustakaan",
+                text: "Perpustakaan merupakan salah satu tempat penting bagi siswa di sekolah. Saat jam istirahat, banyak siswa datang ke perpustakaan untuk membaca atau mencari informasi. Ada siswa yang membaca buku cerita untuk mengisi waktu luang, sementara siswa lainnya mencari buku yang diperlukan untuk mengerjakan tugas. Beberapa siswa juga meminjam buku untuk dibaca di rumah. Di dalam perpustakaan, siswa dapat menemukan berbagai macam buku yang memberikan pengetahuan dan informasi. Oleh karena itu, perpustakaan dapat membantu siswa meningkatkan pengetahuan dan kebiasaan membaca.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Perpustakaan membantu siswa mendapatkan pengetahuan dan meningkatkan kebiasaan membaca.",
+                keySupport: "Siswa membaca buku cerita, mencari informasi untuk tugas, meminjam buku, dan menemukan berbagai macam buku di perpustakaan."
+            },
+            {
+                id: 10,
+                title: "Soal 10 — Menanam Sayuran Bersama Keluarga",
+                text: "Pada hari Minggu pagi, keluarga Riko memanfaatkan halaman belakang rumah untuk menanam sayuran. Ayah terlebih dahulu menggemburkan tanah menggunakan cangkul agar tanah menjadi lebih mudah ditanami. Setelah itu, Ibu menyiapkan bibit sayuran yang akan ditanam. Riko dan adiknya membuat lubang kecil di tanah sesuai dengan jarak yang telah ditentukan. Mereka kemudian menanam bibit secara bersama-sama dan menyiramnya menggunakan air secukupnya. Semua anggota keluarga bekerja sesuai tugas masing-masing. Mereka merasa senang karena dapat melakukan kegiatan bersama sekaligus belajar merawat tanaman.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Keluarga Riko bekerja sama menanam sayuran di halaman rumah.",
+                keySupport: "Ayah menggemburkan tanah, Ibu menyiapkan bibit, Riko dan adiknya membuat lubang, kemudian mereka menanam dan menyiram bibit bersama-sama."
+            },
+            {
+                id: 11,
+                title: "Soal 11 — Berangkat Sekolah Tepat Waktu",
+                text: "Setiap pagi, Raka selalu bangun lebih awal agar tidak terlambat pergi ke sekolah. Setelah bangun, ia merapikan tempat tidur, mandi, sarapan, dan menyiapkan perlengkapan sekolah. Raka juga memeriksa kembali jadwal pelajaran sebelum memasukkan buku ke dalam tas. Setelah semua keperluannya siap, Raka berpamitan kepada orang tuanya dan berangkat ke sekolah. Kebiasaan tersebut membuat Raka dapat tiba di sekolah sebelum bel masuk berbunyi.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Raka selalu bangun lebih awal agar dapat datang ke sekolah tepat waktu.",
+                keySupport: "Raka merapikan tempat tidur, mandi, sarapan, menyiapkan perlengkapan sekolah, memeriksa jadwal, dan berangkat sebelum bel berbunyi."
+            },
+            {
+                id: 12,
+                title: "Soal 12 — Bermain Layang-Layang",
+                text: "Pada hari Minggu sore, Fikri pergi ke lapangan bersama ayahnya untuk bermain layang-layang. Ayah membantu Fikri memasang benang pada layang-layang yang baru dibelinya. Setelah angin bertiup cukup kencang, Fikri mencoba menerbangkan layang-layang tersebut. Awalnya, layang-layang Fikri beberapa kali jatuh karena ia belum bisa mengatur benangnya. Ayah kemudian mengajarinya cara menarik dan mengulur benang dengan tepat. Setelah mencoba beberapa kali, akhirnya layang-layang Fikri dapat terbang tinggi di udara.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Fikri belajar menerbangkan layang-layang bersama ayahnya.",
+                keySupport: "Ayah membantu memasang benang, Fikri mencoba menerbangkan layang-layang, beberapa kali gagal, kemudian ayah mengajarinya hingga berhasil."
+            },
+            {
+                id: 13,
+                title: "Soal 13 — Membuat Jus Buah",
+                text: "Suatu pagi, ibu mengajak Siska membuat jus buah di dapur. Ibu meminta Siska mencuci beberapa buah terlebih dahulu. Setelah buah bersih, Siska memotongnya menjadi bagian-bagian kecil dengan bantuan ibu. Mereka kemudian memasukkan potongan buah ke dalam blender dan menambahkan air secukupnya. Setelah blender dinyalakan, buah tersebut berubah menjadi minuman yang lembut. Siska merasa senang karena dapat membuat minuman sehat bersama ibunya.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Siska membuat jus buah bersama ibunya.",
+                keySupport: "Siska mencuci dan memotong buah, memasukkan buah ke blender, menambahkan air, lalu menghaluskannya menjadi jus."
+            },
+            {
+                id: 14,
+                title: "Soal 14 — Menjaga Hewan Peliharaan",
+                text: "Aldi memiliki seekor kucing bernama Miko yang sangat ia sayangi. Setiap pagi, Aldi memberikan makanan dan minuman kepada Miko sebelum berangkat sekolah. Sepulang sekolah, ia membersihkan tempat tidur dan tempat makan kucingnya. Aldi juga mengajak Miko bermain agar kucing tersebut tidak merasa bosan. Jika Miko terlihat kurang sehat, Aldi segera memberi tahu orang tuanya agar dapat diperiksa. Aldi memahami bahwa memelihara hewan membutuhkan tanggung jawab dan perhatian.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Aldi merawat hewan peliharaannya dengan penuh tanggung jawab.",
+                keySupport: "Aldi memberi makanan dan minuman, membersihkan tempat Miko, mengajaknya bermain, dan memperhatikan kesehatannya."
+            },
+            {
+                id: 15,
+                title: "Soal 15 — Hari Pertama di Sekolah",
+                text: "Hari pertama masuk sekolah menjadi pengalaman yang menyenangkan bagi Naya. Ia merasa sedikit gugup karena akan bertemu dengan guru dan teman-teman baru. Sesampainya di kelas, Naya duduk dengan tenang sambil memperhatikan teman-temannya. Guru kemudian memperkenalkan diri dan mengajak seluruh siswa melakukan permainan sederhana. Setelah permainan selesai, Naya mulai berbicara dengan teman yang duduk di sebelahnya. Rasa gugup yang dirasakannya perlahan hilang karena suasana kelas terasa menyenangkan.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Hari pertama sekolah menjadi pengalaman yang menyenangkan bagi Naya.",
+                keySupport: "Naya awalnya merasa gugup, guru mengadakan permainan, Naya mulai berbicara dengan teman, dan rasa gugupnya perlahan hilang."
+            },
+            {
+                id: 16,
+                title: "Soal 16 — Membuat Kerajinan dari Barang Bekas",
+                text: "Guru kelas 4 mengajak siswa membuat kerajinan dari barang bekas. Setiap siswa diminta membawa botol plastik, kardus, atau kertas bekas dari rumah. Di kelas, guru menunjukkan contoh tempat pensil yang dibuat dari botol plastik. Para siswa kemudian mulai membuat kerajinan sesuai dengan kreativitas masing-masing. Ada yang membuat tempat pensil, pot bunga kecil, dan tempat menyimpan alat tulis. Kegiatan tersebut membuat siswa menyadari bahwa barang bekas masih dapat dimanfaatkan menjadi benda yang berguna.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Siswa membuat kerajinan yang bermanfaat dari barang bekas.",
+                keySupport: "Siswa membawa barang bekas, melihat contoh dari guru, membuat berbagai kerajinan, dan memanfaatkan barang bekas menjadi benda berguna."
+            },
+            {
+                id: 17,
+                title: "Soal 17 — Hujan Sepulang Sekolah",
+                text: "Ketika bel pulang sekolah berbunyi, hujan turun dengan deras. Beberapa siswa segera mengambil payung yang mereka bawa dari rumah. Sementara itu, Budi tidak membawa payung karena pagi hari cuaca terlihat cerah. Ia memilih menunggu hujan sedikit reda di depan kelas. Melihat Budi sendirian, Rian mengajaknya pulang bersama menggunakan payungnya. Mereka berjalan perlahan agar tidak terpeleset di jalan yang basah. Budi merasa senang karena Rian mau membantunya.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Rian membantu Budi pulang saat hujan.",
+                keySupport: "Hujan turun deras, Budi tidak membawa payung, Rian mengajaknya pulang bersama, dan mereka berjalan dengan hati-hati."
+            },
+            {
+                id: 18,
+                title: "Soal 18 — Persiapan Lomba Kelas",
+                text: "Kelas 4 akan mengikuti lomba kebersihan antarkelas. Untuk mempersiapkan lomba tersebut, seluruh siswa bekerja sama membersihkan dan menghias kelas. Beberapa siswa membersihkan jendela dan meja, sedangkan siswa lainnya merapikan buku serta menghias dinding. Ketua kelas membagi tugas agar semua siswa mendapatkan pekerjaan. Mereka juga menyiapkan tempat sampah dan beberapa tanaman kecil untuk memperindah ruangan. Setelah selesai, kelas terlihat bersih, rapi, dan menarik.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Siswa kelas 4 bekerja sama mempersiapkan lomba kebersihan kelas.",
+                keySupport: "Siswa membersihkan kelas, merapikan buku, menghias dinding, menyiapkan tempat sampah, dan menata tanaman."
+            },
+            {
+                id: 19,
+                title: "Soal 19 — Kegiatan di Taman Kota",
+                text: "Pada hari libur, keluarga Rina pergi ke taman kota untuk menghabiskan waktu bersama. Rina dan adiknya bermain di area permainan anak, sedangkan ayah dan ibu duduk di bangku taman. Setelah bermain, mereka berjalan mengelilingi taman sambil melihat berbagai jenis bunga dan pepohonan. Rina juga membawa buku kecil untuk mencatat nama beberapa tanaman yang belum pernah dilihatnya. Sebelum pulang, keluarga Rina membeli makanan dan menikmatinya di tempat yang telah disediakan. Mereka merasa senang karena dapat menikmati waktu bersama di ruang terbuka.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Keluarga Rina menghabiskan waktu bersama di taman kota.",
+                keySupport: "Rina dan adiknya bermain, orang tua duduk di taman, mereka melihat tanaman, mencatat nama tanaman, dan menikmati makanan bersama."
+            },
+            {
+                id: 20,
+                title: "Soal 20 — Menabung untuk Membeli Buku",
+                text: "Setiap hari, Tono menyisihkan sebagian uang sakunya untuk ditabung. Ia memiliki keinginan membeli sebuah buku cerita yang sudah lama ingin dibacanya. Karena ingin segera mendapatkan buku tersebut, Tono berusaha tidak menggunakan uang tabungannya untuk membeli makanan atau mainan. Setiap sore, ia memasukkan uang yang telah disisihkan ke dalam celengan. Setelah beberapa minggu, uang Tono sudah cukup untuk membeli buku yang diinginkannya. Tono merasa senang karena berhasil mendapatkan buku tersebut dari hasil menabung.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Tono menabung untuk membeli buku yang diinginkannya.",
+                keySupport: "Tono menyisihkan uang saku, tidak menggunakan uang tabungan untuk membeli makanan atau mainan, memasukkan uang ke celengan, dan akhirnya berhasil membeli buku."
+            },
+            {
+                id: 21,
+                title: "Soal 21 — Pelangi Setelah Hujan",
+                text: "Sore itu, hujan turun cukup deras di desa tempat tinggal Rara. Setelah hujan berhenti, Rara keluar rumah untuk melihat keadaan di halaman. Ia melihat langit mulai cerah dan matahari perlahan muncul dari balik awan. Tidak lama kemudian, terlihat pelangi dengan berbagai warna membentang di langit. Rara segera memanggil kakaknya untuk melihat pemandangan tersebut. Mereka berdiri di teras sambil mengamati pelangi sampai warnanya perlahan menghilang.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Rara melihat pelangi setelah hujan.",
+                keySupport: "Hujan berhenti, matahari muncul, pelangi terlihat di langit, dan Rara mengajak kakaknya melihat pelangi."
+            },
+            {
+                id: 22,
+                title: "Soal 22 — Kehidupan Lebah",
+                text: "Lebah merupakan serangga yang memiliki peran penting bagi lingkungan. Lebah membantu proses penyerbukan ketika berpindah dari satu bunga ke bunga lainnya. Selain itu, lebah menghasilkan madu yang dapat dimanfaatkan oleh manusia. Lebah biasanya hidup secara berkelompok di dalam sarang. Setiap lebah memiliki tugas yang berbeda, seperti mencari makanan, menjaga sarang, atau merawat larva. Kehidupan lebah menunjukkan bahwa kerja sama sangat penting untuk menjaga keberlangsungan kelompok.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Lebah memiliki peran penting bagi lingkungan dan hidup dengan bekerja sama.",
+                keySupport: "Lebah membantu penyerbukan, menghasilkan madu, hidup berkelompok, dan memiliki tugas yang berbeda dalam sarang."
+            },
+            {
+                id: 23,
+                title: "Soal 23 — Gunung Berapi",
+                text: "Gunung berapi merupakan salah satu bentuk kenampakan alam yang dapat ditemukan di beberapa wilayah Indonesia. Gunung berapi terbentuk karena adanya aktivitas dari dalam bumi. Ketika sedang aktif, gunung berapi dapat mengeluarkan abu, asap, lava, dan material lainnya. Meskipun dapat menyebabkan bahaya ketika meletus, tanah di sekitar gunung berapi biasanya memiliki banyak unsur yang membuatnya subur. Oleh karena itu, banyak masyarakat memanfaatkan wilayah sekitar gunung untuk kegiatan pertanian dengan tetap memperhatikan keselamatan.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Gunung berapi merupakan kenampakan alam yang memiliki manfaat sekaligus dapat menimbulkan bahaya.",
+                keySupport: "Gunung berapi terbentuk karena aktivitas bumi, dapat mengeluarkan abu dan lava, tanah di sekitarnya subur, dan masyarakat memanfaatkannya untuk pertanian."
+            },
+            {
+                id: 24,
+                title: "Soal 24 — Pesawat Terbang",
+                text: "Pesawat terbang merupakan salah satu alat transportasi yang dapat membawa penumpang dalam perjalanan jauh. Pesawat dapat bergerak dengan cepat sehingga waktu perjalanan menjadi lebih singkat dibandingkan beberapa jenis transportasi lainnya. Sebelum pesawat lepas landas, penumpang harus mengikuti aturan keselamatan yang diberikan oleh awak kabin. Mereka harus duduk di tempat masing-masing dan menggunakan sabuk pengaman. Dengan mengikuti aturan tersebut, perjalanan dapat berlangsung dengan lebih aman dan tertib.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Pesawat terbang merupakan alat transportasi yang cepat dan harus digunakan dengan memperhatikan keselamatan.",
+                keySupport: "Pesawat dapat membawa penumpang dalam perjalanan jauh, menghemat waktu, dan penumpang harus mengikuti aturan keselamatan."
+            },
+            {
+                id: 25,
+                title: "Soal 25 — Proses Terjadinya Hujan",
+                text: "Hujan merupakan bagian dari siklus air yang terjadi di alam. Air dari sungai, danau, laut, dan permukaan tanah menguap karena terkena panas matahari. Uap air tersebut naik ke udara dan mengalami pendinginan sehingga membentuk kumpulan awan. Ketika awan mengandung banyak titik air dan sudah tidak mampu menahannya, air akan jatuh ke permukaan bumi sebagai hujan. Air hujan kemudian dapat mengalir kembali ke sungai, danau, atau laut sehingga siklus air terus berlangsung.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Hujan terjadi melalui beberapa tahapan dalam siklus air.",
+                keySupport: "Air menguap karena panas matahari, uap membentuk awan, titik air jatuh sebagai hujan, dan air kembali mengalir ke sungai, danau, atau laut."
+            },
+            {
+                id: 26,
+                title: "Soal 26 — Sejarah Uang",
+                text: "Pada zaman dahulu, manusia belum menggunakan uang seperti yang digunakan saat ini. Untuk mendapatkan barang yang dibutuhkan, seseorang harus menukarkan barang miliknya dengan barang milik orang lain. Kegiatan tersebut disebut barter. Namun, barter terkadang sulit dilakukan karena kedua orang harus memiliki barang yang saling dibutuhkan. Kemudian manusia mulai menggunakan benda tertentu sebagai alat tukar. Seiring perkembangan zaman, muncullah uang dalam bentuk koin dan uang kertas yang lebih mudah digunakan untuk melakukan transaksi.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Penggunaan uang berkembang dari sistem barter hingga menjadi uang seperti sekarang.",
+                keySupport: "Dahulu manusia melakukan barter, barter memiliki kesulitan, kemudian digunakan benda sebagai alat tukar, hingga muncul uang koin dan uang kertas."
+            },
+            {
+                id: 27,
+                title: "Soal 27 — Kehidupan di Laut",
+                text: "Laut merupakan tempat hidup bagi berbagai macam makhluk hidup. Di dalam laut terdapat ikan, terumbu karang, rumput laut, dan berbagai jenis hewan lainnya. Setiap makhluk hidup memiliki peran dalam menjaga keseimbangan ekosistem laut. Terumbu karang, misalnya, menjadi tempat berlindung dan mencari makanan bagi berbagai jenis ikan. Oleh sebab itu, manusia perlu menjaga kebersihan laut dan tidak membuang sampah sembarangan agar kehidupan di dalamnya tetap terjaga.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Laut merupakan habitat berbagai makhluk hidup yang harus dijaga kelestariannya.",
+                keySupport: "Laut memiliki berbagai makhluk hidup, setiap makhluk memiliki peran, terumbu karang menjadi tempat hidup ikan, dan kebersihan laut harus dijaga."
+            },
+            {
+                id: 28,
+                title: "Soal 28 — Teknologi Komunikasi",
+                text: "Perkembangan teknologi membuat manusia semakin mudah berkomunikasi dengan orang lain. Dahulu, orang harus mengirim surat untuk menyampaikan kabar kepada seseorang yang berada jauh. Saat ini, manusia dapat menggunakan telepon, pesan singkat, atau panggilan video untuk berkomunikasi. Pesan yang dikirim melalui teknologi dapat diterima dalam waktu yang sangat singkat. Meskipun memberikan banyak kemudahan, teknologi komunikasi harus digunakan dengan bijak agar tidak mengganggu kegiatan belajar dan kehidupan sehari-hari.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Perkembangan teknologi memudahkan manusia dalam berkomunikasi.",
+                keySupport: "Dahulu orang menggunakan surat, sekarang dapat menggunakan telepon dan pesan, komunikasi menjadi lebih cepat, dan teknologi harus digunakan dengan bijak."
+            },
+            {
+                id: 29,
+                title: "Soal 29 — Bulan dan Bumi",
+                text: "Bulan merupakan benda langit yang dapat terlihat dari bumi pada malam hari. Bulan tidak menghasilkan cahaya sendiri, tetapi terlihat bercahaya karena memantulkan cahaya dari matahari. Bentuk bulan yang terlihat dari bumi dapat berubah-ubah, mulai dari bulan sabit hingga bulan purnama. Perubahan bentuk tersebut terjadi karena posisi bulan terhadap bumi dan matahari berubah selama bulan bergerak mengelilingi bumi. Fenomena tersebut membuat bulan menjadi salah satu benda langit yang menarik untuk diamati.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Bulan merupakan benda langit yang memiliki berbagai bentuk tampak dari bumi.",
+                keySupport: "Bulan terlihat pada malam hari, memantulkan cahaya matahari, bentuknya tampak berubah, dan perubahan tersebut berkaitan dengan posisi bulan terhadap bumi dan matahari."
+            },
+            {
+                id: 30,
+                title: "Soal 30 — Cita-Cita Menjadi Dokter",
+                text: "Sejak kecil, Farhan memiliki cita-cita menjadi seorang dokter. Ia ingin membantu orang-orang yang sedang sakit agar dapat kembali sehat. Untuk mencapai cita-citanya, Farhan rajin belajar terutama pada pelajaran yang berkaitan dengan tubuh manusia dan kesehatan. Ia juga sering membaca buku tentang berbagai jenis penyakit dan cara menjaga kesehatan. Selain belajar, Farhan memahami bahwa seorang dokter harus memiliki sikap sabar, teliti, dan peduli kepada orang lain. Oleh karena itu, Farhan berusaha membiasakan sikap tersebut dalam kehidupan sehari-hari.",
+                mainIdeaQ: "Apa ide pokok dari paragraf tersebut?",
+                supportIdeaQ: "Apa saja ide pendukung dari paragraf tersebut?",
+                keyMain: "Farhan memiliki cita-cita menjadi dokter dan berusaha mempersiapkan diri untuk mencapai cita-citanya.",
+                keySupport: "Farhan ingin membantu orang sakit, rajin belajar, membaca buku tentang kesehatan, serta berusaha menjadi anak yang sabar, teliti, dan peduli."
+            }
+        ];
+
+        // Web Audio API
+        function playClickSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(500, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.2);
+            } catch (e) {
+                console.log("Audio Error");
+            }
+        }
+
+        function playDiceRollSound(durationMs = 3500) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const startTime = audioCtx.currentTime;
+                const endTime = startTime + (durationMs / 1000);
+
+                let nextClick = startTime;
+                let interval = 0.05;
+
+                function scheduleClicks() {
+                    while (nextClick < endTime) {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+
+                        osc.type = 'triangle';
+                        const freq = 120 + Math.random() * 80; 
+                        osc.frequency.setValueAtTime(freq, nextClick);
+
+                        gain.gain.setValueAtTime(0.15, nextClick);
+                        gain.gain.exponentialRampToValueAtTime(0.001, nextClick + 0.03);
+
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+
+                        osc.start(nextClick);
+                        osc.stop(nextClick + 0.03);
+
+                        const progress = (nextClick - startTime) / (endTime - startTime);
+                        interval = 0.05 + (progress * progress * 0.25); 
+                        nextClick += interval;
+                    }
+                }
+                scheduleClicks();
+            } catch (e) {
+                console.log("Audio Error");
+            }
+        }
+
+        function navigateTo(targetUrl) {
+            playClickSound();
+            const pageOverlay = document.getElementById('pageOverlay');
+            if (pageOverlay) pageOverlay.classList.add('active');
+
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 600);
+        }
+
+        function toggleSidebar() {
+            playClickSound();
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('open');
+
+            if (isOpen) {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+            } else {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('active');
+            }
+        }
+
+        function loadState() {
+            const savedState = localStorage.getItem(LS_KEY);
+            if (savedState) {
+                try {
+                    const loaded = JSON.parse(savedState);
+                    state.groups = loaded.groups || [];
+                    state.currentGroupIndex = loaded.currentGroupIndex || 0;
+                    state.usedQuestions = loaded.usedQuestions || [];
+                    state.currentActiveQuestion = loaded.currentActiveQuestion || null;
+                    state.answers = loaded.answers || {};
+                } catch (e) {
+                    console.error("Gagal memuat state:", e);
+                }
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(LS_KEY, JSON.stringify(state));
+        }
+
+        function confirmReset() {
+            playClickSound();
+            if (confirm("Apakah Anda yakin ingin mereset seluruh LKPD? Semua data kelompok, skor, dan soal akan dihapus.")) {
+                localStorage.removeItem(LS_KEY);
+                window.location.reload(true); 
+            }
+        }
+
+        function updateTurnDisplay() {
+            const turnBox = document.getElementById('turnBox');
+            if (!state.groups || state.groups.length === 0) {
+                turnBox.innerText = "GILIRAN: Belum Ada Kelompok (Tambahkan Kelompok)";
+            } else {
+                const currentGrp = state.groups[state.currentGroupIndex];
+                if (currentGrp) {
+                    turnBox.innerText = `GILIRAN: KELOMPOK ${currentGrp.number} — ${currentGrp.name.toUpperCase()}`;
+                }
+            }
+        }
+
+        function showAddGroupModal() {
+            playClickSound();
+            const modal = document.getElementById('addGroupModal');
+            document.getElementById('groupNumberInput').value = (state.groups.length + 1);
+            document.getElementById('groupNameInput').value = '';
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function saveGroup() {
+            playClickSound();
+            const numVal = parseInt(document.getElementById('groupNumberInput').value);
+            const nameVal = document.getElementById('groupNameInput').value.trim();
+
+            if (!numVal || !nameVal) {
+                showToast("⚠️ Mohon isi nomor kelompok dan nama kelompok dengan benar!");
+                return;
+            }
+
+            const newGroup = {
+                id: Date.now(),
+                number: numVal,
+                name: nameVal,
+                score: 0
+            };
+
+            state.groups.push(newGroup);
+            saveState();
+            renderLeaderboard();
+            updateTurnDisplay();
+            closeModal('addGroupModal');
+            showToast(`✅ ${nameVal} (Kelompok ${numVal}) berhasil ditambahkan!`);
+        }
+
+        function renderLeaderboard() {
+            const tbody = document.getElementById('leaderboardBody');
+            tbody.innerHTML = '';
+
+            if (!state.groups || state.groups.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #666;">Belum ada kelompok.</td></tr>';
+                return;
+            }
+
+            let sortedGroups = [...state.groups].sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                return a.number - b.number;
+            });
+
+            sortedGroups.forEach((grp, index) => {
+                const rank = index + 1;
+                const tr = document.createElement('tr');
+                if (rank === 1) tr.classList.add('rank-1');
+                else if (rank === 2) tr.classList.add('rank-2');
+                else if (rank === 3) tr.classList.add('rank-3');
+
+                tr.innerHTML = `
+                    <td style="font-weight:700;">${rank}</td>
+                    <td>Kelompok ${grp.number}</td>
+                    <td>${grp.name}</td>
+                    <td><strong style="color: var(--dark-blue); font-size: 1.1em;">${grp.score}</strong></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderQuestionArea() {
+            const headerTitle = document.getElementById('questionHeaderTitle');
+            const questionText = document.getElementById('questionText');
+            const formArea = document.getElementById('questionFormArea');
+            const finishMsg = document.getElementById('finishMessage');
+
+            if (state.usedQuestions.length >= TOTAL_QUESTIONS && !state.currentActiveQuestion) {
+                document.getElementById('spin').style.display = 'none';
+                formArea.style.display = 'none';
+                finishMsg.style.display = 'block';
+                headerTitle.innerText = "SELESAI";
+                questionText.innerText = "";
+                return;
+            }
+
+            finishMsg.style.display = 'none';
+            document.getElementById('spin').style.display = 'block';
+
+            if (state.currentActiveQuestion) {
+                const qData = QUESTIONS.find(q => q.id === state.currentActiveQuestion);
+                if (qData) {
+                    headerTitle.innerText = `SOAL ${qData.id}`;
+                    questionText.innerText = qData.text;
+                    formArea.style.display = 'block';
+                    document.getElementById('studentNumber').innerText = qData.id;
+                    document.getElementById('spinResultDisplay').innerText = qData.id;
+                    document.getElementById('spinBtn').disabled = true;
+                }
+            } else {
+                headerTitle.innerText = "SOAL";
+                questionText.innerText = "[Tekan SPIN SOAL untuk memutar dadu dan menampilkan soal]";
+                formArea.style.display = 'none';
+                document.getElementById('mainIdea').value = '';
+                document.getElementById('supportIdea').value = '';
+                document.getElementById('studentNumber').innerText = '---';
+                document.getElementById('spinResultDisplay').innerHTML = '<span style="font-size: 2em;">🎲</span>';
+                document.getElementById('spinBtn').disabled = false;
+            }
+        }
+
+        function showDiceModal() {
+            const modal = document.getElementById('diceOverlay');
+            const cube = document.getElementById('diceCube');
+            document.getElementById('finalResultDisplay').style.display = 'none';
+            document.getElementById('diceCubeContainer').style.display = 'block';
+            document.getElementById('continueBtn').style.display = 'none';
+            document.getElementById('diceTitle').innerText = 'Memutar Dadu Soal... 🎲';
+            
+            cube.classList.remove('spinning');
+            cube.style.transition = 'none'; 
+            cube.style.transform = 'rotateX(0deg) rotateY(0deg) rotateZ(0deg)'; 
+            
+            setTimeout(() => {
+                cube.style.transition = ''; 
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('active'), 10);
+            }, 50);
+        }
+
+        function closeDiceModal() {
+            playClickSound();
+            const modal = document.getElementById('diceOverlay');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 500);
+            renderQuestionArea();
+            document.getElementById('mainIdea').focus();
+        }
+
+        function spinRandomQuestion() {
+            playClickSound();
+            if (state.groups.length < 2) {
+                showToast("⚠️ Mohon tambahkan minimal 2 kelompok terlebih dahulu!");
+                showAddGroupModal();
+                return;
+            }
+
+            if (state.usedQuestions.length >= TOTAL_QUESTIONS) {
+                renderQuestionArea();
+                return;
+            }
+
+            const availableQuestions = [];
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                if (!state.usedQuestions.includes(i)) {
+                    availableQuestions.push(i);
+                }
+            }
+
+            if (availableQuestions.length === 0) {
+                renderQuestionArea();
+                return;
+            }
+
+            showDiceModal();
+            playDiceRollSound(3500); 
+
+            const cube = document.getElementById('diceCube');
+            cube.classList.add('spinning');
+            
+            const chosenQNum = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+
+            setTimeout(() => {
+                cube.classList.remove('spinning');
+                document.getElementById('diceTitle').innerHTML = `Soal Terpilih! <span style="color: var(--accent-yellow);">${chosenQNum}</span>`;
+                document.getElementById('diceCubeContainer').style.display = 'none'; 
+                
+                const finalResultEl = document.getElementById('finalResultDisplay');
+                finalResultEl.innerText = chosenQNum;
+                finalResultEl.style.display = 'block';
+                
+                document.getElementById('continueBtn').style.display = 'block';
+                
+                state.currentActiveQuestion = chosenQNum;
+                saveState();
+            }, 3500); 
+        }
+
+        function evaluateAnswerAccuracy(userText, keyText) {
+            if (!userText) return false;
+            
+            const cleanUser = userText.toLowerCase().replace(/[^\w\s]/gi, '').trim();
+            const cleanKey = keyText.toLowerCase().replace(/[^\w\s]/gi, '').trim();
+            if (!cleanUser) return false;
+
+            if (cleanUser.includes(cleanKey) || cleanKey.includes(cleanUser)) return true;
+
+            const stopWords = ['dan', 'yang', 'di', 'ke', 'dari', 'untuk', 'pada', 'adalah', 'sebagai', 'ini', 'itu'];
+            const userWords = cleanUser.split(/\s+/).filter(w => w.length > 2 && !stopWords.includes(w));
+            const keyWords = cleanKey.split(/\s+/).filter(w => w.length > 2 && !stopWords.includes(w));
+
+            if (keyWords.length === 0) return cleanUser.length > 3;
+
+            let matchCount = 0;
+            keyWords.forEach(kw => {
+                if (userWords.some(uw => uw.includes(kw) || kw.includes(uw))) {
+                    matchCount++;
+                }
+            });
+
+            const matchRatio = matchCount / keyWords.length;
+            return matchRatio >= 0.35;
+        }
+
+        function submitAnswer() {
+            playClickSound();
+            if (!state.currentActiveQuestion) return;
+            if (state.groups.length === 0) return;
+
+            const mainInput = document.getElementById('mainIdea').value.trim();
+            const suppInput = document.getElementById('supportIdea').value.trim();
+
+            if (!mainInput || !suppInput) {
+                showToast("⚠️ Kolom Ide Pokok dan Ide Pendukung wajib diisi!");
+                return;
+            }
+
+            const qNum = state.currentActiveQuestion;
+            const qData = QUESTIONS.find(q => q.id === qNum);
+
+            const isMainCorrect = evaluateAnswerAccuracy(mainInput, qData.keyMain);
+            const isSuppCorrect = evaluateAnswerAccuracy(suppInput, qData.keySupport);
+
+            let questionScore = 0;
+            if (isMainCorrect && isSuppCorrect) {
+                questionScore = 20;
+            } else if (isMainCorrect || isSuppCorrect) {
+                questionScore = 10;
+            } else {
+                questionScore = 0;
+            }
+
+            const currentGrp = state.groups[state.currentGroupIndex];
+            currentGrp.score += questionScore;
+
+            state.answers[`q${qNum}`] = {
+                groupId: currentGrp.id,
+                groupNum: currentGrp.number,
+                groupName: currentGrp.name,
+                mainIdea: mainInput,
+                supportIdea: suppInput,
+                score: questionScore
+            };
+
+            state.usedQuestions.push(qNum);
+            state.currentActiveQuestion = null;
+
+            state.currentGroupIndex = (state.currentGroupIndex + 1) % state.groups.length;
+
+            saveState();
+            renderLeaderboard();
+            updateTurnDisplay();
+            renderQuestionArea();
+
+            showToast(`✅ ${currentGrp.name} mendapatkan ${questionScore} poin pada Soal ${qNum}!`);
+        }
+
+        function closeModal(id) {
+            playClickSound();
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 500);
+        }
+
+        function exportPDF() {
+            playClickSound();
+            
+            if (!state || !state.groups || state.groups.length === 0) {
+                showToast("⚠️ Belum ada data kelompok untuk dicetak!");
+                return;
+            }
+
+            let sortedGroups = [...state.groups].sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                return a.number - b.number;
+            });
+
+            let tableRows = sortedGroups.map((grp, idx) => `
+                <tr style="border-bottom: 1px solid #ddd; text-align: center;">
+                    <td style="padding: 12px; border: 1px solid #ddd;">${idx + 1}</td>
+                    <td style="padding: 12px; border: 1px solid #ddd;">Kelompok ${grp.number}</td>
+                    <td style="padding: 12px; border: 1px solid #ddd; text-align: left;">${grp.name}</td>
+                    <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">${grp.score}</td>
+                </tr>
+            `).join('');
+
+            let printWindow = window.open('', '_blank');
+            
+            if (!printWindow) {
+                showToast("⚠️ Pop-up diblokir oleh browser. Izinkan pop-up untuk mencetak PDF.");
+                return;
+            }
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="id">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Papan Peringkat LKPD</title>
+                    <style>
+                        * {
+                            -webkit-print-color-adjust: exact !important;
+                            print-color-adjust: exact !important;
+                        }
+                        body {
+                            font-family: Arial, sans-serif;
+                            padding: 40px;
+                            background-color: #ffffff;
+                            color: #000000;
+                            max-width: 800px;
+                            margin: 0 auto;
+                        }
+                        h1, h3 { text-align: center; color: #0b3d91; }
+                        h3 { color: #555555; margin-top: 0; }
+                        hr { margin: 20px 0; border: 1px solid #0b3d91; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th { background-color: #1e90ff !important; color: #ffffff !important; padding: 12px; border: 1px solid #ddd; text-align: center; }
+                        td { padding: 12px; border: 1px solid #ddd; }
+                        .footer-date { margin-top: 40px; text-align: right; font-size: 0.9em; color: #666666; }
+                        .btn-print {
+                            display: block;
+                            width: 200px;
+                            margin: 30px auto 0 auto;
+                            padding: 12px 20px;
+                            background-color: #1e90ff;
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            font-size: 16px;
+                            font-weight: bold;
+                            cursor: pointer;
+                            text-align: center;
+                        }
+                        .btn-print:hover { background-color: #0b3d91; }
+                        @media print {
+                            .btn-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>PAPAN PERINGKAT LKPD INTERAKTIF</h1>
+                    <h3>Bahasa Indonesia — Ide Pokok & Ide Pendukung</h3>
+                    <hr>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Peringkat</th>
+                                <th>Kelompok</th>
+                                <th>Nama Kelompok</th>
+                                <th>Total Skor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+
+                    <div class="footer-date">
+                        <p>Dicetak otomatis pada: ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    </div>
+
+                    <button class="btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+
+                    <script>
+                        window.onload = function() {
+                            setTimeout(() => {
+                                window.print();
+                            }, 500);
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+            showToast("📄 Tab pratinjau cetak berhasil dibuka!");
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.innerText = message;
+            toast.style.cssText = `
+                position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+                background-color: var(--dark-blue); color: var(--white); padding: 12px 25px;
+                border-radius: 10px; z-index: 1001; opacity: 0; transition: opacity 0.5s;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 1em; font-weight: 700;
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.style.opacity = '1', 10);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(toast), 500);
+            }, 3000);
+        }
+
+        window.onload = function() {
+            loadState();
+            renderLeaderboard();
+            updateTurnDisplay();
+            renderQuestionArea();
+        };
+    </script>
+</body>
+</html>

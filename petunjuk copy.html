@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petunjuk Penggunaan | Teman Belajarku</title>
+    
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variabel Warna Khas Roblox (Prinsip 5) */
+        :root {
+            --roblox-blue: #00A2FF; /* Aksen Utama Biru Cerah */
+            --roblox-yellow: #FFD93D; /* Aksen Cerah/Shadow Teks */
+            --roblox-white: #FFFFFF;
+            --roblox-grey: #E8E8E8; /* Latar Umum */
+            --roblox-dark-text: #2C3E50; /* Teks Abu Tua */
+            --shadow-ringan: rgba(0, 0, 0, 0.15);
+        }
+
+        /* Keyframes Animasi (Prinsip 7) */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); } 
+            50% { transform: translateY(-15px) rotate(-1deg); } 
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 162, 255, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 25px 8px rgba(0, 162, 255, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 162, 255, 0.4); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        
+        /* Reset dan Typography Dasar (Prinsip 4) */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            color: var(--roblox-dark-text);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-color: var(--roblox-blue); 
+        }
+
+        #bg-video { 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -3;
+        }
+
+        /* Efek Tampilan Umum 3D dan Hover */
+        .header, .sidebar, .instructions-list, .cta-button, .footer, .modal-content, .teacher-help {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .header, .sidebar, .modal-content, .footer {
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+        .instructions-list {
+            border-radius: 16px;
+        }
+        .cta-button:hover, .teacher-help:hover {
+            transform: scale(1.05) translateY(-3px);
+            filter: brightness(1.1);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.3); 
+        }
+        
+        .main-title, .logo, .cta-button, .menu-toggle {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        .header {
+            background: linear-gradient(to bottom, var(--roblox-white), var(--roblox-grey));
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            height: 40px; /* Menjaga ukuran tinggi header tetap konsisten */
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--roblox-blue);
+            text-shadow: 1px 1px 0 var(--roblox-yellow);
+        }
+        .menu-toggle {
+            color: var(--roblox-dark-text);
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* --- SIDEBAR DIPERBAIKI (TIDAK TERTUTUP HEADER) --- */
+        .sidebar {
+            background-color: var(--roblox-blue);
+            box-shadow: 5px 0 15px rgba(0,0,0,0.4);
+            position: fixed;
+            top: 70px; /* Mulai di bawah header */
+            left: -250px;
+            height: calc(100% - 70px); /* Sisa tinggi layar penuh */
+            width: 250px;
+            transition: left 0.3s ease-in-out;
+            z-index: 999;
+            padding-top: 20px;
+            overflow-y: auto;
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar-menu li a {
+            color: var(--roblox-white);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 15px 25px;
+            display: block;
+            text-decoration: none;
+        }
+        .sidebar-menu li a:hover {
+            background: var(--roblox-yellow);
+            color: var(--roblox-dark-text);
+            border-radius: 0 40px 40px 0;
+            transform: scale(1.0); 
+            box-shadow: none; 
+            filter: none;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998; /* Di bawah sidebar, di atas konten lain */
+            display: none;
+        }
+
+        /* MAIN CONTENT */
+        .main-section {
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(6px);
+            border-radius: 20px;
+            padding: 50px 5%;
+            margin: 40px auto;
+            max-width: 900px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            animation: fadeInUp 1s ease-out forwards; 
+            opacity: 0; 
+        }
+
+        .title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            margin-bottom: 30px;
+            position: relative; 
+        }
+
+        .main-title {
+            font-size: 3.2rem;
+            color: var(--roblox-blue);
+            font-weight: 900;
+            text-shadow:
+                2px 2px 0 #00A2FF,
+                4px 4px 0 #FFD93D,
+                6px 6px 0 rgba(0,0,0,0.25); 
+            text-align: center;
+            animation: fadeInUp 1s ease-out forwards;
+            margin: 0 20px; 
+        }
+        
+        .kartun2, .kartun3 {
+            width: 150px; 
+            height: auto;
+            animation: float 6s ease-in-out infinite;
+            z-index: 5; 
+            opacity: 1.0; 
+            pointer-events: none; 
+            margin-top: -30px; 
+            border-radius: 8px; 
+            background-color: var(--roblox-yellow);
+            border: 4px solid var(--roblox-blue);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            object-fit: contain; 
+        }
+
+        .kartun2 { margin-right: 20px; }
+        .kartun3 { 
+            margin-left: 20px; 
+            animation: float 6s ease-in-out infinite reverse;
+            background-color: var(--roblox-blue);
+            border: 4px solid var(--roblox-yellow);
+        }
+
+        .instructions-list {
+            max-width: 800px;
+            padding: 30px;
+            background: var(--roblox-white);
+            border: 4px solid var(--roblox-blue);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0; 
+            animation-delay: 0.2s;
+            animation-fill-mode: forwards;
+            margin: 0 auto;
+        }
+        .instructions-list ol {
+            counter-reset: instruction-counter;
+            padding-left: 0;
+            list-style: none; 
+        }
+        .instructions-list li {
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            padding: 10px;
+            background: var(--roblox-grey);
+            border-radius: 8px;
+            border-left: 8px solid var(--roblox-yellow);
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+        .instructions-list li::before {
+            counter-increment: instruction-counter;
+            content: counter(instruction-counter);
+            font-weight: 800;
+            color: var(--roblox-white);
+            background-color: var(--roblox-blue);
+            border-radius: 6px;
+            padding: 5px 12px;
+            margin-right: 15px;
+            display: inline-block;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            box-shadow: 2px 2px 0 var(--roblox-dark-text);
+            transform: translateY(-2px);
+        }
+
+        .cta-button {
+            padding: 20px 50px;
+            background: linear-gradient(to top, #00A2FF, #33CCFF);
+            border: 3px solid var(--roblox-white);
+            box-shadow: 0 8px 20px rgba(0,162,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            border-radius: 12px; 
+            color: white;
+            text-decoration: none;
+            display: block; 
+            margin: 40px auto 20px auto;
+            max-width: fit-content;
+            cursor: pointer;
+            animation: pulse 2.5s infinite, fadeInUp 1s ease-out forwards;
+            animation-delay: 1s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(to top, #33CCFF, #66DDFF);
+            filter: brightness(1.1);
+        }
+
+        .floating-asset { display: none; }
+        
+        .teacher-help {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            font-size: 2.8rem;
+            background: linear-gradient(to bottom, #FFD93D, #FFC300);
+            color: var(--roblox-dark-text);
+            padding: 15px;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 4px solid var(--roblox-white);
+            cursor: pointer;
+            z-index: 50;
+            transform: rotate(-3deg);
+            transition: 0.3s;
+        }
+        .teacher-help:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 20px rgba(255, 217, 61, 0.7);
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            padding: 40px;
+            border-radius: 20px;
+            border: 6px solid var(--roblox-blue);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            background: var(--roblox-white);
+            max-width: 90%;
+            text-align: center;
+        }
+        .modal-content h3 {
+            color: var(--roblox-blue);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 1px 1px 0 var(--roblox-yellow);
+        }
+        .modal-content p {
+            font-style: italic;
+            color: var(--roblox-dark-text);
+            font-weight: 600;
+        }
+        .modal-content .close-btn {
+            background-color: var(--roblox-yellow);
+            color: var(--roblox-dark-text);
+            font-weight: 800;
+            border-radius: 8px;
+            padding: 8px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+        }
+        .modal-content .close-btn:hover {
+            background-color: #f7b731;
+        }
+
+        .footer {
+            padding: 20px 5%;
+            margin-top: 50px;
+            text-align: center;
+            background: linear-gradient(to right, #00A2FF, #A0D8FF);
+            color: var(--roblox-white);
+            font-size: 0.9rem;
+            text-shadow: 0 0 5px rgba(255,255,255,0.6);
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+            border-radius: 12px 12px 0 0;
+            font-weight: 600;
+            width: 100%; 
+            box-sizing: border-box;
+        }
+
+        .particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @media screen and (max-width: 1024px) {
+            .kartun2, .kartun3 {
+                width: 100px; 
+                margin-top: -15px;
+            }
+            .main-title { font-size: 2.8rem; }
+        }
+        @media screen and (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+                text-shadow: 2px 2px 0 #00A2FF, 4px 4px 0 var(--roblox-yellow);
+            }
+            .instructions-list { padding: 20px; }
+            .cta-button { font-size: 1.3rem; padding: 15px 30px; }
+            .kartun2, .kartun3 { display: none; }
+            .main-section { padding: 30px 5%; margin: 20px auto; }
+        }
+        @media screen and (max-width: 480px) {
+            .main-title { font-size: 2rem; }
+            .header { padding: 10px 5%; }
+            .logo { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    
+
+<video autoplay muted loop playsinline id="bg-video" onerror="this.onerror=null; this.style.display='none'; document.body.style.backgroundColor = 'var(--roblox-blue)'; console.error('Video latar belakang gagal dimuat. Menggunakan warna latar belakang solid.');">
+        <source src="petunjuk.mp4" type="video/mp4">
+        
+
+Video tidak didukung oleh browser Anda.
+    </video>
+    
+    
+
+<div class="particle" style="top: 10%; left: 10%; animation-duration: 9s;"></div>
+    <div class="particle" style="top: 80%; left: 50%; animation-duration: 6s;"></div>
+    <div class="particle" style="top: 40%; right: 20%; animation-duration: 7s; width: 4px; height: 4px;"></div>
+    
+
+    <nav class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="index.html">🏠 Beranda</a></li>
+            <li><a href="petunjuk.html">💡 Petunjuk</a></li>
+            <li><a href="tujuan.html">🎯 Tujuan</a></li>
+            <li><a href="materi.html">📚 Materi</a></li>
+            <li><a href="lkpd.html">📝 LKPD</a></li>
+            <li><a href="refleksi.html">🌟 Refleksi</a></li>
+            <li><a href="profil.html">Profil Pengembang</a></li>
+        </ul>
+    </nav>
+    
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="menu-toggle" id="menuToggle">☰</div>
+        <div class="logo">Teman Belajarku</div>
+        <div></div> </header>
+
+    <main class="main-section">
+        
+        <span class="floating-asset book">📖</span>
+        <span class="floating-asset pencil">✏️</span>
+
+        
+
+<div class="title-container">
+            
+
+<!-- Sumber gambar kembali ke file lokal kartun2.png, dengan fallback yang robust -->
+<img src="kartun2.png" 
+                 alt="Karakter Kartun Kiri" 
+                 class="kartun2" 
+                 onerror="this.onerror=null; this.src='https://placehold.co/150x180/FFD93D/2C3E50?text=FALLBACK';" />
+            
+            <h1 class="main-title">👉 📘 PETUNJUK PENGGUNAAN!</h1>
+            
+            
+
+<!-- Sumber gambar kembali ke file lokal kartun3.png, dengan fallback yang robust -->
+<img src="kartun3.png" 
+                 alt="Karakter Kartun Kanan" 
+                 class="kartun3"
+                 onerror="this.onerror=null; this.src='https://placehold.co/150x180/00A2FF/FFFFFF?text=FALLBACK';" />
+        </div>
+
+        
+        <div class="instructions-list">
+            <ol id="instructionList">
+                <li style="animation-delay: 0.1s;">Bacalah dengan saksama setiap petunjuk yang ada di halaman ini!</li>
+                <li style="animation-delay: 0.3s;">Klik tombol “Mulai Belajar!” untuk memulai perjalanan belajar!</li>
+                <li style="animation-delay: 0.5s;">Perhatikan setiap contoh ide pokok dan ide pendukung dengan cermat!</li>
+                <li style="animation-delay: 0.7s;">Gunakan tombol panah di bawah layar untuk berpindah halaman!</li>
+                <li style="animation-delay: 0.9s;">Jika menemukan kesulitan, klik ikon guru di pojok kanan bawah untuk mendapatkan bantuan!</li>
+                <li style="animation-delay: 1.1s;">Saat mengerjakan kuis, jangan khawatir jika salah! Kamu akan mendapat petunjuk untuk memperbaikinya!</li>
+                <li style="animation-delay: 1.3s;">Nikmati pembelajaran ini dengan semangat dan rasa ingin tahu yang tinggi!</li>
+            </ol>
+        </div>
+        
+        <a href="tujuan.html" class="cta-button">Mulai Belajar!</a>
+    </main>
+
+    <div class="teacher-help" id="teacherHelp">❓</div> 
+
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <h3>Semangat!</h3>
+            <p>Ayo semangat belajar! Kesalahan bukan akhir, tapi awal dari pemahaman!</p>
+            <button class="close-btn" onclick="closeModal()">OK!</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        © 2025 Teman Belajarku - Pembelajaran Bahasa Indonesia Interaktif
+    </footer>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const overlay = document.getElementById('overlay');
+        const helpModal = document.getElementById('helpModal');
+        const teacherHelp = document.getElementById('teacherHelp');
+        
+        // --- 1. Fungsi Buka/Tutup Sidebar ---
+        function toggleSidebar() {
+            const isOpen = sidebar.classList.toggle('open');
+            overlay.style.display = isOpen ? 'block' : 'none';
+        }
+
+        // Event listener untuk tombol hamburger
+        menuToggle.addEventListener('click', toggleSidebar);
+
+        // Fungsi Menutup Sidebar saat Klik di Luar (Overlay)
+        overlay.addEventListener('click', toggleSidebar);
+
+        // --- 2. Fungsi Buka/Tutup Modal Pop-up ---
+        function openModal() {
+            helpModal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            helpModal.style.display = 'none';
+        }
+
+        // Event listener untuk Ikon Guru
+        teacherHelp.addEventListener('click', openModal);
+
+        // Event listener untuk menutup Modal saat klik di luar Modal Content
+        helpModal.addEventListener('click', function(e) {
+            if (e.target.id === 'helpModal') {
+                closeModal();
+            }
+        });
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Profil Pengembang - Mahardhika Rizky Dharmawan, mahasiswa Universitas Negeri Malang dan santri Pondok Pesantren Roudlotul Muta’alimin.">
+  <meta name="keywords" content="Mahardhika Rizky Dharmawan, PGSD, Universitas Negeri Malang, Pengembang, Pendidikan, Pondok Pesantren, Web Edukasi">
+  <meta name="author" content="Mahardhika Rizky Dharmawan">
+  <title>Profil Pengembang | Mahardhika Rizky Dharmawan</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts disesuaikan persis dengan File Index -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Variabel Warna & Tema disesuaikan persis dengan File Index */
+    :root {
+        --primary-blue: #1e90ff;
+        --dark-blue: #0b3d91;
+        --accent-yellow: #ffd700;
+        --button-shadow: #b8860b;
+        --white: #ffffff;
+        --glass-white: rgba(255, 255, 255, 0.85);
+        
+        /* Variabel Teks Konten */
+        --color-accent-text: #374151;
+    }
+
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body { 
+      font-family: 'Quicksand', 'Poppins', sans-serif; 
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      color: #333;
+      background-color: var(--dark-blue);
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      opacity: 0;
+      animation: pageFadeIn 1s forwards;
+    }
+
+    @keyframes pageFadeIn {
+        to { opacity: 1; }
+    }
+
+    /* --- VIDEO BACKGROUND SETUP (PERSIS INDEX) --- */
+    .video-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+        overflow: hidden;
+    }
+
+    .video-background video {
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+    }
+
+    /* --- OVERLAY TRANSPARAN (PERSIS INDEX) --- */
+    .video-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(30, 144, 255, 0.2), rgba(11, 61, 145, 0.85));
+        z-index: -1;
+    }
+
+    /* --- SIDEBAR & HEADER GLASSMORPHISM (PERSIS INDEX) --- */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 5%; 
+        background: var(--glass-white); 
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .logo {
+        font-family: 'Fredoka One', cursive; 
+        font-size: 1.8rem;
+        color: var(--dark-blue);
+        text-shadow: 0 2px 0 var(--accent-yellow); 
+        letter-spacing: 1px;
+        margin-right: auto; 
+        margin-left: 20px;
+    }
+
+    .menu-toggle {
+        font-family: 'Fredoka One', cursive;
+        font-size: 2rem;
+        cursor: pointer;
+        color: var(--dark-blue);
+        transition: transform 0.2s;
+        background: var(--white);
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        order: -1;
+    }
+
+    .menu-toggle:hover {
+        transform: scale(1.1);
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(3px);
+        z-index: 998;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px; 
+        height: 100%;
+        background: var(--glass-white);
+        backdrop-filter: blur(15px);
+        color: var(--dark-blue);
+        padding-top: 65px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); 
+        transform: translateX(-100%);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 999;
+        box-sizing: border-box;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    .sidebar-menu li a {
+        display: block;
+        font-size: 1.1rem; 
+        padding: 15px 30px; 
+        color: var(--dark-blue);
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+        transition: background-color 0.3s, transform 0.2s;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        text-decoration: none;
+    }
+
+    .sidebar-menu li a:hover {
+        background-color: rgba(30, 144, 255, 0.15);
+        color: var(--primary-blue);
+        transform: translateX(8px);
+    }
+
+    /* --- ANIMASI SLIDE UP KONTEN --- */
+    .fade-in { 
+        animation: slideUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; 
+        opacity: 0; 
+    }
+    
+    @keyframes slideUp { 
+        from { 
+            opacity: 0; 
+            transform: translateY(30px); 
+        } 
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        } 
+    }
+    
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.3s; }
+    .delay-3 { animation-delay: 0.5s; }
+    .delay-4 { animation-delay: 0.7s; }
+    .delay-5 { animation-delay: 0.9s; }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* --- BUTTON STYLE ROBLOX STYLE (PERSIS INDEX) --- */
+    .cta-button-yellow {
+        position: relative;
+        background-color: var(--accent-yellow);
+        color: var(--dark-blue);
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.1rem;
+        padding: 14px 28px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 8px 0 var(--button-shadow);
+        transition: all 0.15s ease;
+        user-select: none;
+        outline: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .cta-button-yellow:hover {
+        transform: scale(1.05) translateY(-3px);
+        box-shadow: 0 12px 25px rgba(255, 215, 0, 0.4), 0 8px 0 var(--button-shadow);
+        filter: brightness(1.1);
+    }
+
+    .cta-button-yellow:active {
+        transform: translateY(5px);
+        box-shadow: 0 3px 0 var(--button-shadow);
+    }
+
+    .cta-button-blue {
+        position: relative;
+        background-color: var(--white);
+        color: var(--dark-blue);
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.1rem;
+        padding: 14px 28px;
+        border: 2px solid var(--primary-blue);
+        border-radius: 20px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 8px 0 rgba(11, 61, 145, 0.4);
+        transition: all 0.15s ease;
+        user-select: none;
+        outline: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .cta-button-blue:hover {
+        transform: scale(1.05) translateY(-3px);
+        box-shadow: 0 12px 25px rgba(30, 144, 255, 0.3), 0 8px 0 rgba(11, 61, 145, 0.4);
+        background-color: #f0f8ff;
+    }
+
+    .cta-button-blue:active {
+        transform: translateY(5px);
+        box-shadow: 0 3px 0 rgba(11, 61, 145, 0.4);
+    }
+
+    /* Overlay Transisi Pindah Halaman */
+    .transition-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--dark-blue);
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.6s ease;
+    }
+
+    .transition-overlay.active {
+        opacity: 1;
+    }
+
+    /* --- FOOTER GLASSMORPHISM (PERSIS INDEX) --- */
+    .footer {
+        background: var(--glass-white);
+        backdrop-filter: blur(10px);
+        color: var(--dark-blue);
+        padding: 18px 5%;
+        text-align: center;
+        font-size: 0.95rem;
+        font-weight: 700;
+        font-family: 'Quicksand', sans-serif;
+        position: relative;
+        z-index: 10;
+        border-top: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    @media screen and (max-width: 768px) {
+        .logo { font-size: 1.4rem; }
+        .sidebar { width: 250px; }
+        .cta-button-yellow, .cta-button-blue { font-size: 1rem; padding: 12px 20px; width: 100%; }
+    }
+  </style>
+</head>
+
+<body class="text-accent flex flex-col justify-between min-h-screen pt-0 px-0 pb-0">
+
+  <!-- Video Background (Persis File Index) -->
+  <div class="video-background">
+      <video autoplay loop muted playsinline id="backgroundVideo">
+          <source src="index.mp4" type="video/mp4">
+          Browser Anda tidak mendukung video tag.
+      </video>
+  </div>
+
+  <!-- Layer Overlay Gradasi Transparan (Persis File Index) -->
+  <div class="video-overlay"></div>
+
+  <!-- Sidebar Navigasi Glassmorphism (Persis File Index) -->
+  <nav class="sidebar" id="sidebar">
+      <ul class="sidebar-menu">
+          <li><a href="javascript:void(0)" onclick="navigateTo('index.html')">🏠 Beranda</a></li>
+          <li><a href="javascript:void(0)" onclick="navigateTo('petunjuk.html')">💡 Petunjuk</a></li>
+          <li><a href="javascript:void(0)" onclick="navigateTo('tujuan.html')">🎯 Tujuan Pembelajaran</a></li>
+          <li><a href="javascript:void(0)" onclick="navigateTo('materi.html')">📚 Materi</a></li>
+          <li><a href="javascript:void(0)" onclick="navigateTo('lkpd.html')">📝 LKPD</a></li>
+          <li><a href="javascript:void(0)" onclick="navigateTo('refleksi.html')">🌟 Refleksi</a></li>
+          <li><a href="javascript:void(0)" onclick="navigateTo('profil.html')">Profil Pengembang</a></li>
+      </ul>
+  </nav>
+  
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- Header Glassmorphism (Persis File Index) -->
+  <header class="header">
+      <div class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</div>
+      <div class="logo">Teman Belajarku</div>
+      <div></div> 
+  </header>
+
+  <!-- Content Container -->
+  <div class="flex flex-col items-center justify-center w-full px-4 sm:px-6 my-8 z-10 flex-grow">
+    
+    <!-- Profil Card Utama -->
+    <section id="profil" class="fade-in bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl p-6 sm:p-10 w-full max-w-3xl text-center border-2 border-white/50 border-t-8 border-t-blue-600 transition duration-300">
+      <img src="foto-profil.png" alt="Foto Mahardhika Rizky Dharmawan" class="w-32 h-32 sm:w-36 sm:h-36 mx-auto rounded-full shadow-lg mb-6 object-cover border-4 border-blue-600 transform hover:scale-105 transition duration-300">
+      
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-[#0b3d91] tracking-tight font-['Fredoka_One']">Mahardhika Rizky Dharmawan</h1>
+      <p class="mt-2 text-lg sm:text-xl font-bold text-blue-700">S1 Pendidikan Guru Sekolah Dasar</p>
+      <p class="text-gray-600 font-medium">Fakultas Ilmu Pendidikan – Universitas Negeri Malang</p>
+      <p class="text-sm text-gray-500 mt-1 font-semibold">NIM: 230151600989</p>
+    </section>
+
+    <!-- Biodata Card -->
+    <section class="fade-in delay-1 bg-white/85 backdrop-blur-md mt-8 rounded-3xl shadow-xl w-full max-w-3xl p-6 sm:p-8 text-left border-l-8 border-blue-600 border-2 border-white/50">
+      <h2 class="text-2xl font-bold text-[#0b3d91] mb-4 border-b-2 pb-2 border-blue-100 font-['Fredoka_One']">Biodata</h2>
+      <ul class="space-y-3 text-gray-800 font-medium leading-relaxed">
+        <li class="flex flex-col sm:flex-row"><span class="font-bold w-32 text-blue-900">Email:</span> mahardhika.rizky.2301516@students.um.ac.id</li>
+        <li class="flex flex-col sm:flex-row">
+          <span class="font-bold w-32 text-blue-900">Instagram:</span> 
+          <a href="https://instagram.com/mahardhikareal" target="_blank" class="text-blue-600 hover:text-blue-800 transition font-bold underline">@mahardhikareal</a>
+        </li>
+        <li class="flex flex-col sm:flex-row items-start">
+          <span class="font-bold w-32 text-blue-900">Alamat:</span> 
+          <span class="flex-1">RT 03/RW 01, Desa Sumberingin Kulon, Kecamatan Ngunut, Kabupaten Tulungagung</span>
+        </li>
+        <li class="flex flex-col sm:flex-row"><span class="font-bold w-32 text-blue-900">Institusi:</span> Universitas Negeri Malang</li>
+      </ul>
+    </section>
+
+    <!-- Latar Belakang Card -->
+    <section class="fade-in delay-2 bg-white/85 backdrop-blur-md mt-8 rounded-3xl shadow-xl w-full max-w-3xl p-6 sm:p-8 text-left border-2 border-white/50">
+      <h2 class="text-2xl font-bold text-[#0b3d91] mb-4 border-b-2 pb-2 border-blue-100 font-['Fredoka_One']">Latar Belakang</h2>
+      <p class="text-gray-800 leading-relaxed font-medium indent-8">
+        Saya, <strong class="text-blue-900 font-bold">Mahardhika Rizky Dharmawan</strong>, merupakan mahasiswa aktif program studi 
+        <em class="font-semibold text-blue-700">S1 Pendidikan Guru Sekolah Dasar</em> di Fakultas Ilmu Pendidikan, 
+        <strong class="text-blue-900 font-bold">Universitas Negeri Malang</strong>. 
+        Sejak tahun 2017, saya juga menjadi santri di 
+        <strong class="text-blue-900 font-bold">Pondok Pesantren Roudlotul Muta’alimin</strong>, tempat di mana saya belajar 
+        pentingnya keseimbangan antara ilmu pengetahuan dan nilai moral.
+      </p>
+      <p class="text-gray-800 leading-relaxed font-medium mt-4 indent-8">
+        Melalui latar belakang akademik dan religius ini, saya berkomitmen untuk terus mengembangkan 
+        inovasi pembelajaran berbasis teknologi dan karakter. Proyek ini saya rancang sebagai 
+        bentuk kontribusi nyata terhadap dunia pendidikan dasar, agar proses belajar tidak hanya 
+        berorientasi pada hasil, tetapi juga membentuk pribadi yang berakhlak dan berpikir kritis.
+      </p>
+    </section>
+
+    <!-- Ucapan Terima Kasih Card -->
+    <section class="fade-in delay-3 bg-white/85 backdrop-blur-md mt-8 rounded-3xl shadow-xl w-full max-w-3xl p-6 sm:p-8 text-left border-r-8 border-blue-600 border-2 border-white/50">
+      <h2 class="text-2xl font-bold text-[#0b3d91] mb-4 border-b-2 pb-2 border-blue-100 font-['Fredoka_One']">Ucapan Terima Kasih</h2>
+      <p class="text-gray-800 font-medium leading-relaxed mb-4">
+        Dengan penuh rasa hormat dan syukur, saya mengucapkan terima kasih kepada pihak-pihak yang telah memberikan bimbingan, 
+        motivasi, serta dukungan dalam pengembangan proyek ini:
+      </p>
+      <ul class="list-disc list-inside text-gray-800 font-medium space-y-2 ml-4">
+        <li>KH. Imam Taufiq, M.Pd.I – <em class="font-bold text-blue-800">Masyayikh Pondok Pesantren Roudlotul Muta’alimin</em></li>
+        <li>Prof. Dr. Alif Mudiono, M.Pd – <em class="font-bold text-blue-800">Dosen Pembimbing</em></li>
+        <li>SDI Ma’arif Garum – <em class="font-bold text-blue-800">Tempat Pelaksanaan Kegiatan</em></li>
+        <li>Universitas Negeri Malang – <em class="font-bold text-blue-800">Lembaga Pendukung</em></li>
+      </ul>
+    </section>
+
+    <!-- Navigation Buttons (Roblox Style Persis Index) -->
+    <div class="fade-in delay-4 mt-10 mb-6 flex flex-col sm:flex-row justify-center gap-4 w-full max-w-3xl">
+      <button onclick="navigateTo('index.html')" class="cta-button-yellow">
+        <span></span> Kembali ke Beranda
+      </button>
+      <button onclick="scrollToTop()" class="cta-button-blue">
+        <span></span> Kembali ke Atas
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer Kaca Transparan (Persis File Index) -->
+  <footer class="footer fade-in delay-5 w-full">
+    © 2026 Teman Belajarku | Website Pembelajaran Bahasa Indonesia SD
+  </footer>
+
+  <!-- Overlay Transisi Halaman -->
+  <div class="transition-overlay" id="pageOverlay"></div>
+
+  <!-- JavaScript Audio Synthesizer & Navigasi (Persis File Index) -->
+  <script>
+      const sidebar = document.getElementById('sidebar');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      
+      // Fungsi Suara Klik (Web Audio API Synthesizer - Persis Index)
+      function playClickSound() {
+          try {
+              const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+              const oscillator = audioCtx.createOscillator();
+              const gainNode = audioCtx.createGain();
+
+              oscillator.type = 'sine';
+              oscillator.frequency.setValueAtTime(500, audioCtx.currentTime);
+              oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+              
+              gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+              gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+
+              oscillator.connect(gainNode);
+              gainNode.connect(audioCtx.destination);
+
+              oscillator.start();
+              oscillator.stop(audioCtx.currentTime + 0.2);
+          } catch (e) {
+              console.log("Audio Context requires user interaction");
+          }
+      }
+
+      // Toggle Navigasi Sidebar
+      function toggleSidebar() {
+          playClickSound();
+          const isOpen = sidebar.classList.contains('open');
+          if (isOpen) {
+              sidebar.classList.remove('open');
+              sidebarOverlay.classList.remove('active');
+          } else {
+              sidebar.classList.add('open');
+              sidebarOverlay.classList.add('active');
+          }
+      }
+
+      // Fungsi Scroll ke Atas dengan Suara
+      function scrollToTop() {
+          playClickSound();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Fungsi Navigasi Pindah Halaman + Suara + Fade Out Transition
+      function navigateTo(targetUrl) {
+          playClickSound();
+          const pageOverlay = document.getElementById('pageOverlay');
+          if (pageOverlay) {
+              pageOverlay.classList.add('active');
+          }
+
+          setTimeout(() => {
+              window.location.href = targetUrl;
+          }, 600);
+      }
+
+      // Autoplay Handler untuk Video Latar
+      window.addEventListener('load', () => {
+          const video = document.getElementById('backgroundVideo');
+          if (video) {
+              video.play().catch(e => console.log("Autoplay video background dimatikan oleh browser."));
+          }
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petunjuk Penggunaan | Teman Belajarku</title>
+    
+    <!-- Google Fonts disesuaikan dengan file index.html -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variabel Warna & Tema disesuaikan dengan file index.html */
+        :root {
+            --primary-blue: #1e90ff;
+            --dark-blue: #0b3d91;
+            --accent-yellow: #ffd700;
+            --button-shadow: #b8860b;
+            --white: #ffffff;
+            --glass-white: rgba(255, 255, 255, 0.85);
+            --shadow-soft: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Reset & Typography */
+        body {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--dark-blue);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            opacity: 0;
+            animation: pageFadeIn 1s forwards;
+        }
+
+        @keyframes pageFadeIn {
+            to { opacity: 1; }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- VIDEO BACKGROUND SETUP (Sama seperti index.html) --- */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* --- OVERLAY TRANSPARAN --- */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 144, 255, 0.2), rgba(11, 61, 145, 0.85));
+            z-index: -1;
+        }
+
+        /* Header & Navbar Glassmorphism */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%; 
+            background: var(--glass-white); 
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .logo {
+            font-family: 'Fredoka One', cursive; 
+            font-size: 1.8rem;
+            color: var(--dark-blue);
+            text-shadow: 0 2px 0 var(--accent-yellow); 
+            letter-spacing: 1px;
+            margin-right: auto; 
+            margin-left: 20px;
+        }
+
+        .menu-toggle {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--dark-blue);
+            transition: transform 0.2s;
+            background: var(--white);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            order: -1;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Overlay Sidebar Darken */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            z-index: 998;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Sidebar Navigasi Glassmorphism */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px; 
+            height: 100%;
+            background: var(--glass-white);
+            backdrop-filter: blur(15px);
+            color: var(--dark-blue);
+            padding-top: 65px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); 
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999;
+            box-sizing: border-box;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .sidebar-menu li a {
+            display: block;
+            font-size: 1.1rem; 
+            padding: 15px 30px; 
+            color: var(--dark-blue);
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            transition: background-color 0.3s, transform 0.2s;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            text-decoration: none;
+        }
+
+        .sidebar-menu li a:hover,
+        .sidebar-menu li a.active {
+            background-color: rgba(30, 144, 255, 0.15);
+            color: var(--primary-blue);
+            transform: translateX(8px);
+        }
+
+        /* Main Section Container */
+        .main-section {
+            background: rgba(0, 0, 0, 0.25); 
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2); 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); 
+            padding: 40px 5%;
+            margin: 40px auto;
+            max-width: 900px;
+            width: 90%;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            margin-bottom: 30px;
+            position: relative; 
+        }
+
+        .main-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            line-height: 1.2;
+            text-shadow: 
+                0 4px 0 var(--dark-blue),
+                0 8px 15px rgba(0,0,0,0.5),
+                0 0 20px rgba(255, 255, 255, 0.4);
+            margin: 0 15px; 
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); } 
+            50% { transform: translateY(-12px) rotate(-1deg); } 
+        }
+
+        .kartun2, .kartun3 {
+            width: 130px; 
+            height: auto;
+            animation: float 6s ease-in-out infinite;
+            z-index: 5; 
+            opacity: 1.0; 
+            pointer-events: none; 
+            margin-top: -20px; 
+            border-radius: 16px; 
+            background-color: var(--accent-yellow);
+            border: 4px solid var(--white);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            object-fit: contain; 
+        }
+
+        .kartun2 { margin-right: 15px; }
+        .kartun3 { 
+            margin-left: 15px; 
+            animation: float 6s ease-in-out infinite reverse;
+            background-color: var(--primary-blue);
+            border: 4px solid var(--accent-yellow);
+        }
+
+        /* Instructions Box */
+        .instructions-list {
+            max-width: 800px;
+            padding: 30px;
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin: 0 auto;
+            border-radius: 20px;
+        }
+
+        .instructions-list ol {
+            counter-reset: instruction-counter;
+            padding-left: 0;
+            list-style: none; 
+        }
+
+        .instructions-list li {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 18px;
+            font-weight: 700;
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark-blue);
+            border-radius: 12px;
+            border-left: 8px solid var(--primary-blue);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .instructions-list li::before {
+            counter-increment: instruction-counter;
+            content: counter(instruction-counter);
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.1rem;
+            color: var(--white);
+            background-color: var(--primary-blue);
+            border-radius: 10px;
+            padding: 6px 14px;
+            margin-right: 15px;
+            display: inline-block;
+            text-align: center;
+            box-shadow: 0 3px 0 var(--dark-blue);
+            flex-shrink: 0;
+        }
+
+        /* Tombol CTA Roblox Style (Persis index.html) */
+        .cta-button {
+            position: relative;
+            background-color: var(--accent-yellow);
+            color: var(--dark-blue);
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+            padding: 16px 40px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            display: table;
+            margin: 35px auto 10px auto;
+            box-shadow: 0 10px 0 var(--button-shadow);
+            transition: all 0.15s ease;
+            user-select: none;
+            outline: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4), 0 10px 0 var(--button-shadow);
+            filter: brightness(1.1);
+        }
+
+        .cta-button:active {
+            transform: translateY(6px);
+            box-shadow: 0 4px 0 var(--button-shadow);
+        }
+        /* Footer Kaca Transparan */
+        .footer {
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            color: var(--dark-blue);
+            padding: 18px 5%;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 10;
+            border-top: 2px solid rgba(255, 255, 255, 0.5);
+            margin-top: 50px;
+        }
+
+        .particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Overlay Transisi Halaman */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-blue);
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        .transition-overlay.active {
+            opacity: 1;
+        }
+
+        /* Responsive Layout */
+        @media screen and (max-width: 1024px) {
+            .kartun2, .kartun3 {
+                width: 100px; 
+                margin-top: -10px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .instructions-list { padding: 20px; }
+            .cta-button { font-size: 1.2rem; padding: 14px 30px; }
+            .kartun2, .kartun3 { display: none; }
+            .main-section { padding: 30px 5%; margin: 20px auto; }
+            .logo { font-size: 1.4rem; }
+            .sidebar { width: 250px; }
+        }
+
+        @media screen and (max-width: 480px) {
+            .main-title { font-size: 1.8rem; }
+            .header { padding: 10px 5%; }
+            .instructions-list li { font-size: 0.95rem; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Video Background & Layer Overlay Transparan -->
+    <div class="video-background">
+        <video autoplay muted loop playsinline id="bg-video" onerror="this.onerror=null; this.style.display='none';">
+            <source src="petunjuk.mp4" type="video/mp4">
+            Video tidak didukung oleh browser Anda.
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+    
+    <!-- Partikel Mengambang -->
+    <div class="particle" style="top: 10%; left: 10%; animation-duration: 9s;"></div>
+    <div class="particle" style="top: 80%; left: 50%; animation-duration: 6s;"></div>
+    <div class="particle" style="top: 40%; right: 20%; animation-duration: 7s; width: 4px; height: 4px;"></div>
+
+    <!-- Sidebar Navigasi -->
+    <nav class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="javascript:void(0)" onclick="navigateTo('index.html')">🏠 Beranda</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('petunjuk.html')" class="active">💡 Petunjuk</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('tujuan.html')">🎯 Tujuan</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('materi.html')">📚 Materi</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('lkpd.html')">📝 LKPD</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('refleksi.html')">🌟 Refleksi</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('profil.html')">Profil Pengembang</a></li>
+        </ul>
+    </nav>
+    
+    <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Header / Taskbar -->
+    <header class="header">
+        <div class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</div>
+        <div class="logo">Teman Belajarku</div>
+        <div></div> 
+    </header>
+
+    <!-- Content Utama -->
+    <main class="main-section">
+        <div class="title-container">
+            <img src="kartun2.png" 
+                 alt="Karakter Kartun Kiri" 
+                 class="kartun2" 
+                 onerror="this.onerror=null; this.src='https://placehold.co/150x180/FFD93D/2C3E50?text=FALLBACK';" />
+            
+            <h1 class="main-title">PETUNJUK PENGGUNAAN</h1>
+            
+            <img src="kartun3.png" 
+                 alt="Karakter Kartun Kanan" 
+                 class="kartun3"
+                 onerror="this.onerror=null; this.src='https://placehold.co/150x180/00A2FF/FFFFFF?text=FALLBACK';" />
+        </div>
+        
+        <div class="instructions-list">
+            <ol id="instructionList">
+                <li style="animation-delay: 0.1s;">Bacalah dengan saksama setiap petunjuk yang ada di halaman ini!</li>
+                <li style="animation-delay: 0.3s;">Klik tombol “Mulai Belajar!” untuk memulai perjalanan belajar!</li>
+                <li style="animation-delay: 0.5s;">Perhatikan setiap contoh ide pokok dan ide pendukung dengan cermat!</li>
+                <li style="animation-delay: 0.7s;">Gunakan tombol panah di bawah layar untuk berpindah halaman!</li>
+                <li style="animation-delay: 1.1s;">Saat mengerjakan soal, diskusikan dengan teman kelompok!</li>
+                <li style="animation-delay: 1.3s;">Nikmati pembelajaran ini dengan semangat dan rasa ingin tahu yang tinggi!</li>
+            </ol>
+        </div>
+        
+        <a href="javascript:void(0)" onclick="navigateTo('tujuan.html')" class="cta-button">Mulai Belajar!</a>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        © 2026 Teman Belajarku - Pembelajaran Bahasa Indonesia Interaktif
+    </footer>
+
+    <!-- Overlay Transisi Keluar Halaman -->
+    <div class="transition-overlay" id="pageOverlay"></div>
+
+    <!-- JavaScript dengan Integrasi Efek Suara + Penanganan Modal & Sidebar -->
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const overlay = document.getElementById('overlay');
+        
+        // Audio Synthesizer (Sesuai dengan index.html)
+        function playClickSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(500, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.2);
+            } catch (e) {
+                console.log("Audio Context requires user interaction");
+            }
+        }
+
+        // Toggle Navigasi Sidebar
+        function toggleSidebar() {
+            playClickSound();
+            const isOpen = sidebar.classList.contains('open');
+            if (isOpen) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+            }
+        }
+
+        // Navigasi dengan efek transisi mulus
+        function navigateTo(targetUrl) {
+            playClickSound();
+            const pageOverlay = document.getElementById('pageOverlay');
+            if (pageOverlay) {
+                pageOverlay.classList.add('active');
+            }
+
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 600);
+        }
+    </script>
+</body>
+</html>
